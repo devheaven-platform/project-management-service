@@ -5,6 +5,7 @@ import models.Project;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.UUID;
 
 @Stateless
@@ -18,18 +19,22 @@ public class ProjectDAO {
     }
 
     public void removeMember(Project project, UUID member){
-        project.getMembers().remove(member);
+        List<UUID> UUIDList = project.getMembers();
+        UUIDList.remove(member);
+        project.setMembers(UUIDList);
+        em.merge(project);
     }
 
     public void addMember(Project project, UUID member){
-
-        Project project1 = getProjectById(project.getId());
-        project1.getMembers().add(member);
-        em.merge(project1);
+        List<UUID> UUIDList = project.getMembers();
+        UUIDList.add(member);
+        project.setMembers(UUIDList);
+        em.merge(project);
     }
 
     public void archiveProject(Project project){
         project.setArchived(true);
+        em.merge(project);
     }
 
     public Project getProjectById(int id){
