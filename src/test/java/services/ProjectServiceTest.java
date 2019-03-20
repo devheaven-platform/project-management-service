@@ -65,8 +65,10 @@ public class ProjectServiceTest {
 
         projectService.addMember(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
 
-        assertEquals(1, testProject.getMembers().size());
-        assertEquals(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"), testProject.getMembers().get(0));
+        Project project1 = projectService.getProjectById(testProject.getId());
+
+        assertEquals(1, project1.getMembers().size());
+        assertEquals(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"), project1.getMembers().get(0));
     }
 
     @Test
@@ -78,27 +80,27 @@ public class ProjectServiceTest {
 
         projectService.archiveProject(testProject.getId());
 
-        assertEquals(true, testProject.isArchived());
+        Project project1 = projectService.getProjectById(testProject.getId());
+
+        assertEquals(true, project1.isArchived());
     }
 
     @Test
     public void editProjectTest(){
         Project project = new Project();
         project.setName("projectVier");
-        project.setBudget(10000);
         project.getMembers().add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
         Project testProject = projectService.createProject(project);
 
-        assertEquals(10000, testProject.getBudget());
         assertEquals("projectVier", testProject.getName());
 
         project.setName("projectVijf");
-        project.setBudget(12000);
 
-        Project assertProject = projectService.editProject(project);
+        projectService.editProject(project);
 
-        assertEquals(12000, assertProject.getBudget());
-        assertEquals("projectVijf", testProject.getName());
+        Project project1 = projectService.getProjectById(project.getId());
+
+        assertEquals("projectVijf", project1.getName());
     }
 
 }
