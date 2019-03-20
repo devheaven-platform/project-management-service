@@ -37,7 +37,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void acreateTest(){
+    public void createProject(){
         Project project = new Project();
         project.setName("projectSimon");
         project.setBudget(10000);
