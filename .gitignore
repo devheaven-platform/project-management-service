@@ -142,6 +142,9 @@ jboss/server/minimal/work/**/*
 # Ignore all local history of files
 .history
 
+# Created by https://www.gitignore.io/api/maven
+# Edit at https://www.gitignore.io/?templates=maven
+
 ### Maven ###
 target/
 pom.xml.tag
