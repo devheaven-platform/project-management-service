@@ -37,7 +37,17 @@ public class ProjectController {
         }
 
 
-        ProjectDTO returnDTO = new ProjectDTO(project.getId(), project.getOwner(), stringMembers, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate(), project.getBudget(), project.getDeadlines(), project.getClient(), project.isArchived());
+        ProjectDTO returnDTO = new ProjectDTO(project.getId(),
+                project.getOwner(),
+                stringMembers,
+                project.getName(),
+                project.getDescription(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getBudget(),
+                project.getDeadlines(),
+                project.getClient(),
+                project.isArchived());
         return Response.status(201).entity(returnDTO).build();
     }
 
