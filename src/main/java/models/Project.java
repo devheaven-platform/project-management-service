@@ -38,7 +38,7 @@ public class Project {
 
     private float budget;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Deadline> deadlines;
 
     private UUID client;
@@ -69,8 +69,11 @@ public class Project {
 
     public List<UUID> getMembers() {
         List<UUID> UUIDMembers = new ArrayList<>();
-        for(String member : members){
-            UUIDMembers.add(UUID.fromString(member));
+        if(members!= null){
+
+            for(String member : members){
+                UUIDMembers.add(UUID.fromString(member));
+            }
         }
 
         return UUIDMembers;
@@ -78,8 +81,11 @@ public class Project {
 
     public void setMembers(List<UUID> members) {
         List<String> stringMembers = new ArrayList<>();
-        for(UUID member : members){
-            stringMembers.add(String.valueOf(member));
+        if(members!= null){
+            for(UUID member : members){
+                stringMembers.add(String.valueOf(member));
+            }
+
         }
 
         this.members = stringMembers;
