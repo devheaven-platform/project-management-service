@@ -1,5 +1,6 @@
 package models;
 
+import dto.ProjectDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 
@@ -146,5 +147,23 @@ public class Project {
 
     public void setArchived(boolean archived) {
         this.archived = archived;
+    }
+
+    /**
+     * This method should change the values of the current Project to the values of the given ProjectDTO
+     *
+     * @param dto this param is a ProjectDTO containing updated values of the Project
+     */
+    public void updateFromProjectDTO(ProjectDTO dto){
+        this.archived = dto.isArchived();
+        this.budget = dto.getBudget();
+        this.client = dto.getClient();
+        this.deadlines = dto.getDeadlines();
+        this.description = dto.getDescription();
+        this.endDate = dto.getEndDate();
+        this.startDate = dto.getStartDate();
+        this.name = dto.getName();
+        this.owner = dto.getOwner();
+        this.members = dto.getMembers();
     }
 }

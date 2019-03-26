@@ -51,13 +51,16 @@ public class ProjectService {
         }
     }
 
-    public Project editProject(Project project){
+    /**
+     * This method should update the given Project.
+     *
+     * @param project this param should be a existing project with changed values
+     */
+    public void editProject(Project project){
         try{
             projectDAO.editProject(project);
-            return project;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
         }
     }
 

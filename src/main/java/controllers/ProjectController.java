@@ -3,11 +3,9 @@ package controllers;
 import dto.EditMemberDTO;
 import dto.ProjectDTO;
 import models.Project;
-import org.apache.derby.iapi.sql.execute.ExecAggregator;
 import services.ProjectService;
 
 import javax.inject.Inject;
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,6 +23,29 @@ public class ProjectController {
     public Response createProject(Project project) {
         projectService.createProject(project);
         return Response.status(201).entity(project).build();
+    }
+
+    /**
+     * This method should update the given Project.
+     *
+     * @param projectDTO this param should be a projectDTO containing data of a project that should be changed
+     * @return this method returns a response with code 200 or 500
+     */
+    @PATCH
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/")
+    public Response editProject(ProjectDTO projectDTO){
+        try{
+            Project project = projectService.getProjectById(projectDTO.getId());
+            project.updateFromProjectDTO(projectDTO);
+
+            projectService.editProject(project);
+
+            return Response.ok().build();
+        }catch(Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
     }
 
     @PATCH
