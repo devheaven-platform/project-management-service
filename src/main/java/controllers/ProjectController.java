@@ -1,13 +1,13 @@
 package controllers;
 
+import dto.ProjectDTO;
 import models.Project;
+import org.apache.derby.iapi.sql.execute.ExecAggregator;
 import services.ProjectService;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -26,5 +26,16 @@ public class ProjectController {
         return Response.status(201).entity(project).build();
     }
 
-
+    @PATCH
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/")
+    public Response archiveProject(ProjectDTO project){
+        try{
+            projectService.archiveProject(project.getId());
+            return Response.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
 }
