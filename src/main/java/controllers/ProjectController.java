@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.EditMemberDTO;
 import dto.ProjectDTO;
 import models.Project;
 import services.ProjectService;
@@ -8,9 +9,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Produces({"application/json"})
 @Path("project")
@@ -44,8 +42,42 @@ public class ProjectController {
             projectService.editProject(project);
 
             return Response.ok().build();
-        }catch(Exception ex){
-            ex.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @PATCH
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/")
+    public Response archiveProject(ProjectDTO project){
+        try{
+            projectService.archiveProject(project.getId());
+            return Response.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @PATCH
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/")
+    public Response editMembers(EditMemberDTO memberDTO){
+        try{
+            if(memberDTO.isAddMember()){
+                projectService.addMember(memberDTO.getProjectId(), memberDTO.getMemberId());
+                return Response.ok().build();
+            }
+            else if (!memberDTO.isAddMember()){
+                projectService.removeMember(memberDTO.getProjectId(), memberDTO.getMemberId());
+                return Response.ok().build();
+            }
+            return Response.ok().build();
+        }
+        catch (Exception e){
+            e.printStackTrace();
             return Response.status(500).build();
         }
     }
