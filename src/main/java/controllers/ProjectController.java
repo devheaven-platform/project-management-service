@@ -9,6 +9,9 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Produces({"application/json"})
 @Path("project")
@@ -19,10 +22,23 @@ public class ProjectController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/createproject")
-    public Response createProject(Project project) {
+    @Path("/")
+    public Response createProject(ProjectDTO projectDTO) {
+        Project project = new Project();
+        project.updateFromProjectDTO(projectDTO);
         projectService.createProject(project);
-        return Response.status(201).entity(project).build();
+
+        List<String> stringMembers = new ArrayList<>();
+        if(project.getMembers() != null){
+            for(UUID member : project.getMembers()){
+                stringMembers.add(String.valueOf(member));
+            }
+
+        }
+
+
+        ProjectDTO returnDTO = new ProjectDTO(project.getId(), project.getOwner(), stringMembers, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate(), project.getBudget(), project.getDeadlines(), project.getClient(), project.isArchived());
+        return Response.status(201).entity(returnDTO).build();
     }
 
     /**
