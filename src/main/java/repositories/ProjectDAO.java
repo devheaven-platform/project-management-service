@@ -41,6 +41,11 @@ public class ProjectDAO {
         return (Project) em.createNamedQuery("Project.getProjectById").setParameter("id", id).getSingleResult();
     }
 
+    /**
+     * This method should update the given Project.
+     *
+     * @param project this param should be a existing project with changed values
+     */
     public void editProject(Project project){
         em.merge(project);
     }

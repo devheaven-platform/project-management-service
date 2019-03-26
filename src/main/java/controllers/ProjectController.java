@@ -27,32 +27,25 @@ public class ProjectController {
         return Response.status(201).entity(project).build();
     }
 
+    /**
+     * This method should update the given Project.
+     *
+     * @param projectDTO this param should be a projectDTO containing data of a project that should be changed
+     * @return this method returns a response with code 200 or 500
+     */
     @PATCH
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/")
     public Response editProject(ProjectDTO projectDTO){
         try{
             Project project = projectService.getProjectById(projectDTO.getId());
-
-            List<UUID> UUIDMembers = new ArrayList<>();
-            for(String member : projectDTO.getMembers()){
-                UUIDMembers.add(UUID.fromString(member));
-            }
-            project.setMembers(UUIDMembers);
-            project.setBudget(projectDTO.getBudget());
-            project.setName(projectDTO.getName());
-            project.setArchived(projectDTO.isArchived());
-            project.setClient(projectDTO.getClient());
-            project.setDeadlines(projectDTO.getDeadlines());
-            project.setEndDate(projectDTO.getEndDate());
-            project.setStartDate(projectDTO.getStartDate());
-            project.setDescription(projectDTO.getDescription());
-            project.setOwner(projectDTO.getOwner());
+            project.updateFromProjectDTO(projectDTO);
 
             projectService.editProject(project);
+
             return Response.ok().build();
         }catch(Exception ex){
-
+            ex.printStackTrace();
             return Response.status(500).build();
         }
     }
