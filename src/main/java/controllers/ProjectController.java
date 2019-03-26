@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.EditMemberDTO;
 import dto.ProjectDTO;
 import models.Project;
 import org.apache.derby.iapi.sql.execute.ExecAggregator;
@@ -34,6 +35,27 @@ public class ProjectController {
             projectService.archiveProject(project.getId());
             return Response.ok().build();
         }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @PATCH
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/")
+    public Response editMembers(EditMemberDTO memberDTO){
+        try{
+            if(memberDTO.isAddMember()){
+                projectService.addMember(memberDTO.getProjectId(), memberDTO.getMemberId());
+                return Response.ok().build();
+            }
+            else if (!memberDTO.isAddMember()){
+                projectService.removeMember(memberDTO.getProjectId(), memberDTO.getMemberId());
+                return Response.ok().build();
+            }
+            return Response.ok().build();
+        }
+        catch (Exception e){
             e.printStackTrace();
             return Response.status(500).build();
         }
