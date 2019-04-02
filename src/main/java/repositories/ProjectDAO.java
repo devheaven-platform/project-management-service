@@ -18,18 +18,39 @@ public class ProjectDAO {
         em.persist(project);
     }
 
-    public void removeMember(Project project, UUID member){
+    /**
+     * This method removes the specified member from the specified project
+     *
+     * @param project this param represents the id of the project
+     * @param member this param represents the id of the member that needs to be removed from the project
+     * @return returns true if the member is successfully removed from the project
+     */
+    public boolean removeMemberFromProject(Project project, UUID member){
         List<UUID> UUIDList = project.getMembers();
-        UUIDList.remove(member);
+        if(!UUIDList.remove(member)){
+            return false;
+        }
         project.setMembers(UUIDList);
         em.merge(project);
+        return true;
     }
 
-    public void addMember(Project project, UUID member){
+    /**
+     * This method adds a member to the specified project
+     *
+     * @param project this param represents the id of the project
+     * @param member this param represents member that should be added to the specified project
+     * @return returns true if the member is successfully added to the project
+     */
+    public boolean addMemberToProject(Project project, UUID member){
         List<UUID> UUIDList = project.getMembers();
+        if(UUIDList.contains(member)) {
+            return false;
+        }
         UUIDList.add(member);
         project.setMembers(UUIDList);
         em.merge(project);
+        return true;
     }
 
     public void archiveProject(Project project){

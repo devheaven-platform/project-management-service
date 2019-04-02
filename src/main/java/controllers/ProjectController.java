@@ -87,22 +87,44 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Adds a member to the specified project
+     *
+     * @param projectId this param represents the id of the project
+     * @param memberId this param represents the id of the member that needs to be added to the project
+     * @return returns a response with status code 204
+     */
     @PATCH
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/")
-    public Response editMembers(EditMemberDTO memberDTO){
+    @Path("/{projectId}/members/{memberId}")
+    public Response addMemberToProject(@PathParam("projectId") int projectId, @PathParam("memberId") UUID memberId){
         try{
-            if(memberDTO.isAddMember()){
-                projectService.addMember(memberDTO.getProjectId(), memberDTO.getMemberId());
-                return Response.ok().build();
+            if(!projectService.addMemberToProject(projectId, memberId)){
+                return Response.status(400).build();
             }
-            else if (!memberDTO.isAddMember()){
-                projectService.removeMember(memberDTO.getProjectId(), memberDTO.getMemberId());
-                return Response.ok().build();
-            }
-            return Response.ok().build();
+            return Response.noContent().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
         }
-        catch (Exception e){
+    }
+
+
+    /**
+     * This method removes the specified member from the specified project
+     *
+     * @param projectId this param represents the id of the project
+     * @param memberId this param represents the id of the member that needs to be removed from the project
+     * @return returns a response with status code 204
+     */
+    @DELETE
+    @Path("/{projectId}/members/{memberId}")
+    public Response removeMemberFromProject(@PathParam("projectId") int projectId, @PathParam("memberId") UUID memberId){
+        try{
+            if(!projectService.removeMemberFromProject(projectId, memberId)) {
+                return Response.status(404).build();
+            }
+            return Response.noContent().build();
+        }catch (Exception e){
             e.printStackTrace();
             return Response.status(500).build();
         }

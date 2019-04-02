@@ -1,5 +1,6 @@
 package services;
 
+import dto.ProjectDTO;
 import models.Deadline;
 import models.Project;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -31,7 +32,7 @@ public class ProjectServiceTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Project.class, ProjectService.class, ProjectDAO.class, Deadline.class, UUID.class, List.class)
+                .addClasses(Project.class, ProjectService.class, ProjectDAO.class, Deadline.class, UUID.class, List.class, ProjectDTO.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -50,25 +51,52 @@ public class ProjectServiceTest {
     public void removeMemberTest(){
         Project project = new Project();
         project.setName("projectTwee");
-        project.getMembers().add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
         Project testProject = projectService.createProject(project);
+        projectService.addMemberToProject(project.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
+        projectService.addMemberToProject(project.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c10"));
 
-        assertTrue(projectService.removeMember(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73")));
+        project = projectService.getProjectById(project.getId());
+        assertEquals(2, project.getMembers().size());
+
+        assertTrue(projectService.removeMemberFromProject(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73")));
+
+        project = projectService.getProjectById(project.getId());
+        assertEquals(1, project.getMembers().size());
+
+        assertFalse(projectService.removeMemberFromProject(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73")));
+
+        project = projectService.getProjectById(project.getId());
+        assertEquals(1,project.getMembers().size());
+
+        assertTrue(projectService.removeMemberFromProject(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c10")));
+
+        project = projectService.getProjectById(project.getId());
+        assertEquals(0, project.getMembers().size());
     }
 
     @Test
     public void addMemberTest(){
         Project project = new Project();
         project.setName("projectDrie");
-        project.getMembers().add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
         Project testProject = projectService.createProject(project);
 
-        projectService.addMember(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
+        assertTrue(projectService.addMemberToProject(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73")));
 
-        Project project1 = projectService.getProjectById(testProject.getId());
+        project = projectService.getProjectById(project.getId());
+        assertEquals(1, project.getMembers().size());
 
-        assertEquals(1, project1.getMembers().size());
-        assertEquals(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"), project1.getMembers().get(0));
+        assertFalse(projectService.addMemberToProject(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73")));
+
+        project = projectService.getProjectById(project.getId());
+        assertEquals(1, project.getMembers().size());
+
+        assertTrue(projectService.addMemberToProject(testProject.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c10")));
+
+        project = projectService.getProjectById(project.getId());
+        assertEquals(2, project.getMembers().size());
+
+        assertEquals(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"), project.getMembers().get(0));
+        assertEquals(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c10"), project.getMembers().get(1));
     }
 
     @Test

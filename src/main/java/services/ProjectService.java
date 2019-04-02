@@ -23,21 +23,38 @@ public class ProjectService {
         }
     }
 
-    public boolean removeMember(int projectId, UUID memberId){
+    /**
+     * This method removes the specified member from the specified project
+     *
+     * @param projectId this param represents the id of the project
+     * @param memberId this param represents the id of the member that needs to be removed from the project
+     * @return returns true if the member is successfully removed from the project
+     */
+    public boolean removeMemberFromProject(int projectId, UUID memberId){
         try{
             Project project = projectDAO.getProjectById(projectId);
-            projectDAO.removeMember(project, memberId);
-            return true;
+            return projectDAO.removeMemberFromProject(project, memberId);
         }catch (Exception e){
             e.printStackTrace();
             return false;
         }
     }
 
-    public void addMember(int projectId, UUID memberId){
-        Project project = projectDAO.getProjectById(projectId);
-        projectDAO.addMember(project, memberId);
-        System.out.println("Added member");
+    /**
+     * This method adds a member to the specified project
+     *
+     * @param projectId this param represents the id of the project
+     * @param memberId this param represents member that should be added to the specified project
+     * @return returns true if the member is successfully added to the project
+     */
+    public boolean addMemberToProject(int projectId, UUID memberId){
+        try {
+            Project project = projectDAO.getProjectById(projectId);
+            return projectDAO.addMemberToProject(project, memberId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public Project archiveProject(int projectId){
