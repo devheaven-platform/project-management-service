@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class ProjectDTO {
 
-    private int id;
+    private UUID id;
 
     private UUID owner;
 
@@ -32,7 +32,7 @@ public class ProjectDTO {
 
     private boolean archived;
 
-    public ProjectDTO(int id, UUID owner, List<String> members, String name, String description, Date startDate, Date endDate, float budget, List<Deadline> deadlines, UUID client, boolean archived) {
+    public ProjectDTO(UUID id, UUID owner, List<String> members, String name, String description, Date startDate, Date endDate, float budget, List<Deadline> deadlines, UUID client, boolean archived) {
         this.id = id;
         this.owner = owner;
         this.members = members;
@@ -48,11 +48,11 @@ public class ProjectDTO {
 
     public ProjectDTO(){}
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

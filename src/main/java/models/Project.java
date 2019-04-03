@@ -1,6 +1,7 @@
 package models;
 
 import dto.ProjectDTO;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Type;
 
@@ -17,9 +18,10 @@ import java.util.UUID;
         @NamedQuery(name = "Project.getProjectById", query = "select p from Project p where p.id = :id")
 )
 public class Project {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private UUID owner;
 
@@ -51,11 +53,11 @@ public class Project {
     }
 
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

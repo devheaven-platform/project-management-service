@@ -53,12 +53,18 @@ public class ProjectDAO {
         return true;
     }
 
+    /**
+     * Archive the specified project
+     *
+     * @param project this param represents the project that will be archived
+     * @return returns a response with status 200 if successful
+     */
     public void archiveProject(Project project){
         project.setArchived(true);
         em.merge(project);
     }
 
-    public Project getProjectById(int id){
+    public Project getProjectById(UUID id){
         return (Project) em.createNamedQuery("Project.getProjectById").setParameter("id", id).getSingleResult();
     }
 

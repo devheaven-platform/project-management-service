@@ -74,12 +74,17 @@ public class ProjectController {
         }
     }
 
+    /**
+     * Archive the specified project
+     *
+     * @param id this param represents the id of the project that will be archived
+     * @return returns a response with status 200 if successful
+     */
     @PATCH
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/")
-    public Response archiveProject(ProjectDTO project){
+    @Path("/{id}")
+    public Response archiveProject(@PathParam("id") UUID id){
         try{
-            projectService.archiveProject(project.getId());
+            projectService.archiveProject(id);
             return Response.ok().build();
         }catch (Exception e){
             e.printStackTrace();
@@ -96,7 +101,7 @@ public class ProjectController {
      */
     @PATCH
     @Path("/{projectId}/members/{memberId}")
-    public Response addMemberToProject(@PathParam("projectId") int projectId, @PathParam("memberId") UUID memberId){
+    public Response addMemberToProject(@PathParam("projectId") UUID projectId, @PathParam("memberId") UUID memberId){
         try{
             if(!projectService.addMemberToProject(projectId, memberId)){
                 return Response.status(400).build();
@@ -118,7 +123,7 @@ public class ProjectController {
      */
     @DELETE
     @Path("/{projectId}/members/{memberId}")
-    public Response removeMemberFromProject(@PathParam("projectId") int projectId, @PathParam("memberId") UUID memberId){
+    public Response removeMemberFromProject(@PathParam("projectId") UUID projectId, @PathParam("memberId") UUID memberId){
         try{
             if(!projectService.removeMemberFromProject(projectId, memberId)) {
                 return Response.status(404).build();
