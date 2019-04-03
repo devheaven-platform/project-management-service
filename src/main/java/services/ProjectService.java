@@ -30,7 +30,7 @@ public class ProjectService {
      * @param memberId this param represents the id of the member that needs to be removed from the project
      * @return returns true if the member is successfully removed from the project
      */
-    public boolean removeMemberFromProject(int projectId, UUID memberId){
+    public boolean removeMemberFromProject(UUID projectId, UUID memberId){
         try{
             Project project = projectDAO.getProjectById(projectId);
             return projectDAO.removeMemberFromProject(project, memberId);
@@ -47,7 +47,7 @@ public class ProjectService {
      * @param memberId this param represents member that should be added to the specified project
      * @return returns true if the member is successfully added to the project
      */
-    public boolean addMemberToProject(int projectId, UUID memberId){
+    public boolean addMemberToProject(UUID projectId, UUID memberId){
         try {
             Project project = projectDAO.getProjectById(projectId);
             return projectDAO.addMemberToProject(project, memberId);
@@ -57,7 +57,13 @@ public class ProjectService {
         }
     }
 
-    public Project archiveProject(int projectId){
+    /**
+     * Archive the specified project
+     *
+     * @param projectId this param represents the id of the project that will be archived
+     * @return returns a response with status 200 if successful
+     */
+    public Project archiveProject(UUID projectId){
         try{
             Project project = projectDAO.getProjectById(projectId);
             projectDAO.archiveProject(project);
@@ -81,7 +87,7 @@ public class ProjectService {
         }
     }
 
-    public Project getProjectById(int id){
+    public Project getProjectById(UUID id){
         return projectDAO.getProjectById(id);
     }
 }
