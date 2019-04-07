@@ -28,18 +28,9 @@ public class ProjectController {
         project.updateFromProjectDTO(projectDTO);
         projectService.createProject(project);
 
-        List<String> stringMembers = new ArrayList<>();
-        if(project.getMembers() != null){
-            for(UUID member : project.getMembers()){
-                stringMembers.add(String.valueOf(member));
-            }
-
-        }
-
-
         ProjectDTO returnDTO = new ProjectDTO(project.getId(),
                 project.getOwner(),
-                stringMembers,
+                convertUUIDToString(project.getMembers()),
                 project.getName(),
                 project.getDescription(),
                 project.getStartDate(),
@@ -132,6 +123,48 @@ public class ProjectController {
         }catch (Exception e){
             e.printStackTrace();
             return Response.status(500).build();
+        }
+    }
+
+    /**
+     * Retrieve all projects of the specified member
+     *
+     * @param memberId this param is the id of the member that wants to retrieve their projects
+     * @return a response with status code 200 and a list of projects
+     */
+    @GET
+    @Path("/{memberId}")
+    public Response getAllProjectsOfMember(@PathParam("memberId") UUID memberId){
+        try{
+            List<Project> projects = projectService.getAllProjectsOfMember(memberId);
+            List<ProjectDTO> projectDTOS = new ArrayList<>();
+            projects.forEach(x -> {
+                projectDTOS.add(new ProjectDTO(x.getId(), x.getName()));
+            });
+
+            return Response.status(200).entity(projectDTOS).build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    /**
+     * This method converts a List of UUID's to a list of Strings
+     *
+     * @param uuidList this param represents a list of UUID's that will be transformed to string
+     * @return returns a list of uuid strings
+     */
+    private List<String> convertUUIDToString(List<UUID> uuidList){
+        if(uuidList != null) {
+            List<String> stringMembers = new ArrayList<>();
+            for (UUID member : uuidList) {
+                stringMembers.add(String.valueOf(member));
+            }
+            return stringMembers;
+        }
+        else{
+            return null;
         }
     }
 }

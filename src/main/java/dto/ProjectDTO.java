@@ -46,6 +46,11 @@ public class ProjectDTO {
         this.archived = archived;
     }
 
+    public ProjectDTO(UUID id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
     public ProjectDTO(){}
 
     public UUID getId() {

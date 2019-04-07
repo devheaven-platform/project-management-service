@@ -5,6 +5,7 @@ import repositories.ProjectDAO;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.List;
 import java.util.UUID;
 
 @Stateless
@@ -89,5 +90,20 @@ public class ProjectService {
 
     public Project getProjectById(UUID id){
         return projectDAO.getProjectById(id);
+    }
+
+    /**
+     * Retrieve all projects of the specified member
+     *
+     * @param memberId this param is the id of the member that wants to retrieve their projects
+     * @return returns a list of projects
+     */
+    public List<Project> getAllProjectsOfMember(UUID memberId) {
+        try{
+            return projectDAO.getAllMemberProjects(memberId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

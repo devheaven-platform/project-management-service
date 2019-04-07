@@ -17,7 +17,7 @@ import repositories.ProjectDAO;
 import javax.ejb.EJB;
 import javax.persistence.PersistenceContext;
 
-import java.awt.*;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -131,4 +131,27 @@ public class ProjectServiceTest {
         assertEquals("projectVijf", project1.getName());
     }
 
+    @Test
+    public void getAllProjectsOfMemberTest(){
+        Project project = new Project();
+        project.setName("getAllProjectsOfMemberTest1");
+        project = projectService.createProject(project);
+
+        Project project1 = new Project();
+        project1.setName("getAllProjectsOfMemberTest2");
+        project1 = projectService.createProject(project1);
+
+        Project project2 = new Project();
+        project2.setName("getAllProjectsOfMemberTest3");
+        project2 = projectService.createProject(project2);
+
+        assertTrue(projectService.addMemberToProject(project.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c99")));
+        assertTrue(projectService.addMemberToProject(project2.getId(), UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c99")));
+
+        List<Project> projectList = projectService.getAllProjectsOfMember(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c99"));
+        assertEquals(2, projectList.size());
+        assertTrue(projectList.stream().anyMatch(x -> x.getName().equals("getAllProjectsOfMemberTest1")));
+        assertFalse(projectList.stream().anyMatch(x -> x.getName().equals("getAllProjectsOfMemberTest2")));
+        assertTrue(projectList.stream().anyMatch(x -> x.getName().equals("getAllProjectsOfMemberTest3")));
+    }
 }
