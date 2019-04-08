@@ -14,9 +14,10 @@ import java.util.UUID;
 
 @Entity
 @Table
-@NamedQueries(
-        @NamedQuery(name = "Project.getProjectById", query = "select p from Project p where p.id = :id")
-)
+@NamedQueries({
+        @NamedQuery(name = "Project.getProjectById", query = "select p from Project p where p.id = :id"),
+        @NamedQuery(name = "Project.getAllMemberProjects", query = "select p from Project p where :id member of p.members")
+})
 public class Project {
 
     @Id

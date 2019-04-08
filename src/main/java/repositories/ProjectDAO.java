@@ -77,5 +77,13 @@ public class ProjectDAO {
         em.merge(project);
     }
 
-
+    /**
+     * Retrieve all projects of the specified member
+     *
+     * @param memberId this param is the id of the member that wants to retrieve their projects
+     * @return returns a list of projects
+     */
+    public List<Project> getAllMemberProjects(UUID memberId){
+        return em.createNamedQuery("Project.getAllMemberProjects").setParameter("id", memberId.toString()).getResultList();
+    }
 }
