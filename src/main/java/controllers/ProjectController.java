@@ -1,8 +1,11 @@
 package controllers;
 
+import dto.DeadlineDTO;
 import dto.EditMemberDTO;
 import dto.ProjectDTO;
+import models.Deadline;
 import models.Project;
+import services.DeadlineService;
 import services.ProjectService;
 
 import javax.inject.Inject;
@@ -19,6 +22,9 @@ public class ProjectController {
 
     @Inject
     ProjectService projectService;
+
+    @Inject
+    DeadlineService deadlineService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -143,6 +149,25 @@ public class ProjectController {
             });
 
             return Response.status(200).entity(projectDTOS).build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{projectId}/deadline")
+    public Response addDeadline(@PathParam("projectId") UUID projectId, DeadlineDTO deadlineDTO){
+        try{
+            Deadline deadline = new Deadline();
+            deadline.updateFromDeadlineDTO(deadlineDTO);
+            Project project = projectService.getProjectById(projectId);
+
+            deadlineService.addDeadline(project, deadline);
+
+            DeadlineDTO returnDTO = new DeadlineDTO(deadline);
+            return Response.status(201).entity(returnDTO).build();
         }catch (Exception e){
             e.printStackTrace();
             return Response.status(500).build();

@@ -1,6 +1,7 @@
 package services;
 
 import models.Deadline;
+import models.Project;
 import repositories.DeadlineDAO;
 
 import javax.ejb.EJB;
@@ -13,8 +14,8 @@ public class DeadlineService {
     @EJB
     private DeadlineDAO deadlineDAO;
 
-    public void addDeadline(Deadline deadline){
-        deadlineDAO.createDeadline(deadline);
+    public void addDeadline(Project project, Deadline deadline){
+        project.getDeadlines().add(deadline);
     }
 
     public void editDeadline(Deadline deadline){

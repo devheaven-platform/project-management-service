@@ -1,5 +1,6 @@
 package services;
 
+import models.Deadline;
 import models.Project;
 import repositories.ProjectDAO;
 
@@ -104,6 +105,22 @@ public class ProjectService {
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * This method adds a deadline to a existing project
+     *
+     * @param project this param represents the project to which the deadline will be added
+     * @param deadline this param represents the deadline that will be added to the project
+     */
+    public void addDeadline(Project project, Deadline deadline){
+        try {
+            List<Deadline> deadlines = project.getDeadlines();
+            deadlines.add(deadline);
+            project.setDeadlines(deadlines);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
