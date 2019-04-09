@@ -14,6 +14,11 @@ public class ProjectDAO {
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
+    /**
+     * This method creates a new project based on the object given in the parameter
+     *
+     * @param project this param represents the project that will be created
+     */
     public void createProject(Project project){
         em.persist(project);
     }
