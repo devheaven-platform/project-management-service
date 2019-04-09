@@ -15,6 +15,12 @@ public class ProjectService {
     @EJB
     private ProjectDAO projectDAO;
 
+    /**
+     * This method creates a new project based on the object given in the parameter
+     *
+     * @param project this param represents the project that will be created
+     * @return returns the created project
+     */
     public Project createProject(Project project){
         try{
             projectDAO.createProject(project);

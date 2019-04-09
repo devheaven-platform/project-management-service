@@ -42,11 +42,19 @@ public class ProjectServiceTest {
     @Test
     public void createProject(){
         Project project = new Project();
-        project.setName("projectSimon");
+        project.setName("testProject");
         project.setBudget(10000);
-        project.getMembers().add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
+
+        List<UUID> uuidList = new ArrayList<>();
+        uuidList.add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
+        project.setMembers(uuidList);
 
         assertNotNull(projectService.createProject(project));
+        assertNotNull(project.getId());
+        assertEquals(10000 ,project.getBudget(), 0);
+
+        project = projectService.getProjectById(project.getId());
+        assertEquals(1, project.getMembers().size());
     }
 
     @Test
@@ -119,7 +127,11 @@ public class ProjectServiceTest {
     public void editProjectTest(){
         Project project = new Project();
         project.setName("projectVier");
-        project.getMembers().add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
+
+        List<UUID> uuidList = new ArrayList<>();
+        uuidList.add(UUID.fromString("919bde8c-df32-45d7-952e-b47119b73c73"));
+        project.setMembers(uuidList);
+
         Project testProject = projectService.createProject(project);
 
         assertEquals("projectVier", testProject.getName());

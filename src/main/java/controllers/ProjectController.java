@@ -23,29 +23,38 @@ public class ProjectController {
     @Inject
     ProjectService projectService;
 
-    @Inject
-    DeadlineService deadlineService;
-
+    /**
+     * This method creates a new project based on the object given in the parameter
+     *
+     * @param projectDTO this param is a projectDTO containing values of the project that will be created
+     * @return this method with the response code 201 together with the newly created project if the project is created
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/")
     public Response createProject(ProjectDTO projectDTO) {
-        Project project = new Project();
-        project.updateFromProjectDTO(projectDTO);
-        projectService.createProject(project);
+        try {
+            Project project = new Project();
+            project.updateFromProjectDTO(projectDTO);
+            projectService.createProject(project);
 
-        ProjectDTO returnDTO = new ProjectDTO(project.getId(),
-                project.getOwner(),
-                convertUUIDToString(project.getMembers()),
-                project.getName(),
-                project.getDescription(),
-                project.getStartDate(),
-                project.getEndDate(),
-                project.getBudget(),
-                project.getDeadlines(),
-                project.getClient(),
-                project.isArchived());
-        return Response.status(201).entity(returnDTO).build();
+            ProjectDTO returnDTO = new ProjectDTO(project.getId(),
+                    project.getOwner(),
+                    convertUUIDToString(project.getMembers()),
+                    project.getName(),
+                    project.getDescription(),
+                    project.getStartDate(),
+                    project.getEndDate(),
+                    project.getBudget(),
+                    project.getDeadlines(),
+                    project.getClient(),
+                    project.isArchived());
+            return Response.status(201).entity(returnDTO).build();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
     }
 
     /**
