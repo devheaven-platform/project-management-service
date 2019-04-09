@@ -1,5 +1,6 @@
 package repositories;
 
+import models.Deadline;
 import models.Project;
 
 import javax.ejb.Stateless;
@@ -90,5 +91,19 @@ public class ProjectDAO {
      */
     public List<Project> getAllMemberProjects(UUID memberId){
         return em.createNamedQuery("Project.getAllMemberProjects").setParameter("id", memberId.toString()).getResultList();
+    }
+
+    /**
+     * This method adds a deadline to a existing project
+     *
+     * @param project this param represents the project to which the deadline will be added
+     * @param deadline this param represents the deadline that will be added to the project
+     */
+    public void addDeadline(Project project, Deadline deadline){
+        List<Deadline> deadlines = project.getDeadlines();
+        em.persist(deadline);
+        deadlines.add(deadline);
+        project.setDeadlines(deadlines);
+        em.merge(project);
     }
 }

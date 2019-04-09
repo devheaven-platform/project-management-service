@@ -122,9 +122,7 @@ public class ProjectService {
      */
     public void addDeadline(Project project, Deadline deadline){
         try {
-            List<Deadline> deadlines = project.getDeadlines();
-            deadlines.add(deadline);
-            project.setDeadlines(deadlines);
+            projectDAO.addDeadline(project, deadline);
         }catch (Exception e){
             e.printStackTrace();
         }

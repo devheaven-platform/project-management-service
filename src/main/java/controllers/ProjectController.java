@@ -1,14 +1,13 @@
 package controllers;
 
 import dto.DeadlineDTO;
-import dto.EditMemberDTO;
 import dto.ProjectDTO;
 import models.Deadline;
 import models.Project;
-import services.DeadlineService;
 import services.ProjectService;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -164,16 +163,23 @@ public class ProjectController {
         }
     }
 
+    /**
+     * This method adds a deadline to a existing project
+     *
+     * @param projectId this param represents the id of the project to which the deadline will be added
+     * @param deadlineDTO this param represents the deadline that will be added to the project
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{projectId}/deadline")
+    @Transactional
     public Response addDeadline(@PathParam("projectId") UUID projectId, DeadlineDTO deadlineDTO){
         try{
             Deadline deadline = new Deadline();
             deadline.updateFromDeadlineDTO(deadlineDTO);
             Project project = projectService.getProjectById(projectId);
 
-            deadlineService.addDeadline(project, deadline);
+            projectService.addDeadline(project, deadline);
 
             DeadlineDTO returnDTO = new DeadlineDTO(deadline);
             return Response.status(201).entity(returnDTO).build();

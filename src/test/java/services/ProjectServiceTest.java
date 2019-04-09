@@ -16,8 +16,8 @@ import org.junit.runners.MethodSorters;
 import repositories.ProjectDAO;
 
 import javax.ejb.EJB;
-import javax.persistence.PersistenceContext;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -172,7 +172,7 @@ public class ProjectServiceTest {
     @Test
     public void createDeadlineTest(){
         Project project = new Project();
-        project.setName("projectSimon");
+        project.setName("testProject");
         projectService.createProject(project);
 
         Deadline deadline = new Deadline();

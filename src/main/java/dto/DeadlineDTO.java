@@ -3,7 +3,6 @@ package dto;
 import models.Deadline;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 public class DeadlineDTO {
