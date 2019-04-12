@@ -1,6 +1,9 @@
 package models;
 
+import dto.DeadlineDTO;
+
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,27 +16,27 @@ public class Deadline {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private UUID id;
 
-    private Date deadline;
+    private Calendar deadline;
 
     private String description;
 
     private boolean reached;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Date getDeadline() {
+    public Calendar getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(Calendar deadline) {
         this.deadline = deadline;
     }
 
@@ -48,4 +51,16 @@ public class Deadline {
     public boolean isReached() { return reached; }
 
     public void setReached(boolean reached) { this.reached = reached; }
+
+    /**
+     * This method should change the values of the current Deadline to the values of the given DeadlineDTO
+     *
+     * @param dto this param is a DeadlineDTO containing updated values of the Deadline
+     */
+    public void updateFromDeadlineDTO(DeadlineDTO dto){
+        this.id = dto.getId();
+        this.deadline = dto.getDeadline();
+        this.description = dto.getDescription();
+        this.reached = dto.isReached();
+    }
 }

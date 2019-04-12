@@ -1,5 +1,6 @@
 package services;
 
+import dto.DeadlineDTO;
 import dto.ProjectDTO;
 import models.Deadline;
 import models.Project;
@@ -15,9 +16,9 @@ import org.junit.runners.MethodSorters;
 import repositories.ProjectDAO;
 
 import javax.ejb.EJB;
-import javax.persistence.PersistenceContext;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public class ProjectServiceTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Project.class, ProjectService.class, ProjectDAO.class, Deadline.class, UUID.class, List.class, ProjectDTO.class)
+                .addClasses(Project.class, DeadlineDTO.class, ProjectService.class, ProjectDAO.class, Deadline.class, UUID.class, List.class, ProjectDTO.class)
                 .addAsResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -166,5 +167,20 @@ public class ProjectServiceTest {
         assertTrue(projectList.stream().anyMatch(x -> x.getName().equals("getAllProjectsOfMemberTest1")));
         assertFalse(projectList.stream().anyMatch(x -> x.getName().equals("getAllProjectsOfMemberTest2")));
         assertTrue(projectList.stream().anyMatch(x -> x.getName().equals("getAllProjectsOfMemberTest3")));
+    }
+
+    @Test
+    public void createDeadlineTest(){
+        Project project = new Project();
+        project.setName("testProject");
+        projectService.createProject(project);
+
+        Deadline deadline = new Deadline();
+        deadline.setDeadline(Calendar.getInstance());
+        deadline.getDeadline().set(2018,10,10);
+        deadline.setDescription("Deadline");
+
+        projectService.addDeadline(project, deadline);
+        assertEquals(1, project.getDeadlines().size());
     }
 }
