@@ -7,7 +7,7 @@ import com.devheaven.service.models.Project;
 import com.devheaven.service.requests.CreateProjectRequest;
 import com.devheaven.service.requests.UpdateProjectRequest;
 import com.devheaven.service.responses.ProjectResponse;
-import com.devheaven.service.services.impl.ProjectService;
+import com.devheaven.service.services.ProjectService;
 import com.devheaven.service.utils.MergeUtility;
 import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;

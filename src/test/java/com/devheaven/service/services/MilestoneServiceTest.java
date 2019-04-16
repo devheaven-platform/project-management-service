@@ -1,4 +1,4 @@
-package com.devheaven.service.services.impl;
+package com.devheaven.service.services;
 
 import com.devheaven.service.models.Milestone;
 import com.devheaven.service.models.Project;
@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,17 +20,31 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 public class MilestoneServiceTest {
 
+    @TestConfiguration
+    static class ProjectServiceTestContextConfiguration {
+        @Bean
+        public ProjectService projectService() {
+            return new ProjectService();
+        }
+
+        @Bean
+        public MilestoneService milestoneService() {
+            return new MilestoneService();
+        }
+    }
+
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MilestoneService milestoneService;
+
     @MockBean
     private ProjectRepository projectRepository;
-
     @MockBean
     private MilestoneRepository milestoneRepository;
 
@@ -59,26 +75,26 @@ public class MilestoneServiceTest {
 
     @Test
     public void findAll() {
-        Project project = new Project();
-        project.setName("TestProject");
-        projectService.createProject(project);
-
-        assertNotNull(project.getId());
+        throw new UnsupportedOperationException();
     }
 
     @Test
     public void getMilestoneById() {
+        throw new UnsupportedOperationException();
     }
 
     @Test
     public void createMilestone() {
+        throw new UnsupportedOperationException();
     }
 
     @Test
     public void updateMilestone() {
+        throw new UnsupportedOperationException();
     }
 
     @Test
     public void deleteMilestone() {
+        throw new UnsupportedOperationException();
     }
 }
