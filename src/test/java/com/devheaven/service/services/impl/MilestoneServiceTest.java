@@ -1,4 +1,4 @@
-package com.devheaven.service.services;
+package com.devheaven.service.services.impl;
 
 import com.devheaven.service.models.Milestone;
 import com.devheaven.service.models.Project;
@@ -18,13 +18,10 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 public class MilestoneServiceTest {
-
-    @Autowired
-    private MilestoneService milestoneService;
 
     @Autowired
     private ProjectService projectService;

@@ -7,16 +7,17 @@ import com.devheaven.service.models.Project;
 import com.devheaven.service.requests.CreateMilestoneRequest;
 import com.devheaven.service.requests.UpdateMilestoneRequest;
 import com.devheaven.service.responses.MilestoneResponse;
-import com.devheaven.service.services.MilestoneService;
-import com.devheaven.service.services.ProjectService;
+import com.devheaven.service.services.impl.MilestoneService;
+import com.devheaven.service.services.impl.ProjectService;
 import io.swagger.annotations.*;
-import javafx.collections.transformation.SortedList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * This controller handles the requests for the milestone model.
