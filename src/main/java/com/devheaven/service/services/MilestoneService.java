@@ -40,7 +40,7 @@ public class MilestoneService {
      * @return returns the Milestone with the given id.
      */
     public Milestone getMilestoneById(UUID id){
-        return milestoneRepository.getOne(id);
+        return milestoneRepository.findById(id).orElse(null);
     }
 
     /**

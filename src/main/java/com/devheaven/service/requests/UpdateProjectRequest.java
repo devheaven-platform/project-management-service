@@ -3,6 +3,7 @@ package com.devheaven.service.requests;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * This response is used for updating a project.
@@ -22,7 +23,7 @@ public class UpdateProjectRequest {
     private Date start;
 
     @ApiModelProperty(required = true, value = "The owner of the project", example = "95fdb700-d772-4067-8296-89c4ceb73c5f")
-    private String owner;
+    private UUID owner;
 
     @ApiModelProperty(required = true, value = "Whether the project is archived", example = "false")
     private boolean archived;
@@ -104,7 +105,7 @@ public class UpdateProjectRequest {
      *
      * @return the owner of the project.
      */
-    public String getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
@@ -113,7 +114,7 @@ public class UpdateProjectRequest {
      *
      * @param owner the owner to set.
      */
-    public void setOwner(String owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 

@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
-    List<Project> findByMembersContains(String member, Sort sort);
+    List<Project> findByMembersContains(UUID member, Sort sort);
 
 }

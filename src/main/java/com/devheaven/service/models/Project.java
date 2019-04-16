@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.*;
 
+
 /**
  * This model represents a project in the system.
  */
@@ -27,16 +28,16 @@ public class Project implements Comparable<Project> {
     private Date start;
 
     @Column(nullable = false)
-    private String owner;
+    private UUID owner;
 
     @Column(nullable = false, updatable = false)
-    private String client;
+    private UUID client;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> members;
+    private List<UUID> members;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> boards;
+    private List<UUID> boards;
 
     @SortNatural
     @OneToMany(fetch = FetchType.LAZY)
@@ -159,7 +160,7 @@ public class Project implements Comparable<Project> {
      *
      * @return the owner of the project.
      */
-    public String getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
@@ -168,7 +169,7 @@ public class Project implements Comparable<Project> {
      *
      * @param owner the owner to set.
      */
-    public void setOwner(String owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 
@@ -177,7 +178,7 @@ public class Project implements Comparable<Project> {
      *
      * @return the client of the project.
      */
-    public String getClient() {
+    public UUID getClient() {
         return client;
     }
 
@@ -186,7 +187,7 @@ public class Project implements Comparable<Project> {
      *
      * @param client the client to set.
      */
-    public void setClient(String client) {
+    public void setClient(UUID client) {
         this.client = client;
     }
 
@@ -195,7 +196,7 @@ public class Project implements Comparable<Project> {
      *
      * @return the members of the project.
      */
-    public List<String> getMembers() {
+    public List<UUID> getMembers() {
         return members;
     }
 
@@ -204,15 +205,15 @@ public class Project implements Comparable<Project> {
      *
      * @param members the members to set.
      */
-    public void setMembers(List<String> members) {
+    public void setMembers(List<UUID> members) {
         this.members = members;
     }
 
-    public boolean addMember(String member) {
+    public boolean addMember(UUID member) {
         return members.add(member);
     }
 
-    public boolean removeMember(String member) {
+    public boolean removeMember(UUID member) {
         return members.remove(member);
     }
 
@@ -221,7 +222,7 @@ public class Project implements Comparable<Project> {
      *
      * @return the members of the project.
      */
-    public List<String> getBoards() {
+    public List<UUID> getBoards() {
         return boards;
     }
 
@@ -230,7 +231,7 @@ public class Project implements Comparable<Project> {
      *
      * @param boards the boards to set.
      */
-    public void setBoards(List<String> boards) {
+    public void setBoards(List<UUID> boards) {
         this.boards = boards;
     }
 

@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class ProjectController {
      * @return List<ProjectResponse> containing data about the projects in the system.
      */
     @GetMapping("/")
+    @Transactional
     @ApiOperation(value = "List all projects in the system", response = ProjectResponse.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -62,6 +64,7 @@ public class ProjectController {
      * @throws NotFoundException if the project is not found.
      */
     @GetMapping("/{id}")
+    @Transactional
     @ApiOperation(value = "Information about one specific project", response = ProjectResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -70,9 +73,9 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public ProjectResponse getProjectById(@ApiParam(required = true, value = "Id of the project to retrieve") @PathVariable String id) throws NotFoundException {
-        Project project = projectService.findProjectById(UUID.fromString(id));
+        Project project = projectService.findById(UUID.fromString(id));
 
-        if (project != null) {
+        if (project == null) {
             throw new NotFoundException("Project not found");
         }
 
@@ -88,6 +91,7 @@ public class ProjectController {
      * @return List<ProjectResponse> containing the projects from the user.
      */
     @GetMapping("/for/{id}")
+    @Transactional
     @ApiOperation(value = "List all projects for a user", response = ProjectResponse.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -95,7 +99,7 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public List<ProjectResponse> getProjectsForUser(@ApiParam(required = true, value = "Id of the user") @PathVariable String id) {
-        List<Project> projects = projectService.findAllForMember(id);
+        List<Project> projects = projectService.findAllForMember(UUID.fromString(id));
         return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {}.getType());
     }
 
@@ -128,6 +132,7 @@ public class ProjectController {
      * @throws NotFoundException if the project is not found.
      */
     @PatchMapping("/{id}")
+    @Transactional
     @ApiOperation(value = "Update one specific project", response = ProjectResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -136,7 +141,7 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public ProjectResponse updateProject(@ApiParam(required = true, value = "Id of the project to update") @PathVariable String id, @ApiParam("Update Data") @RequestBody UpdateProjectRequest updateProjectRequest) throws NotFoundException {
-        Project existingProject = projectService.findProjectById(UUID.fromString(id));
+        Project existingProject = projectService.findById(UUID.fromString(id));
 
         if (existingProject == null) {
             throw new NotFoundException("Project not found");
@@ -159,16 +164,28 @@ public class ProjectController {
      * @throws BadRequestException if the project already has the member.
      */
     @PatchMapping("/{id}/members/{memberId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Adds a member", response = void.class)
+    @Transactional
+    @ApiOperation(value = "Adds a member", response = ProjectResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public void addMember(@ApiParam(required = true, value = "Id of the project") @PathVariable String id, @ApiParam(required = true, value = "Id of the member") @PathVariable String memberId) throws NotFoundException, BadRequestException {
-        throw new UnsupportedOperationException();
+    public ProjectResponse addMember(@ApiParam(required = true, value = "Id of the project") @PathVariable String id, @ApiParam(required = true, value = "Id of the member") @PathVariable String memberId) throws NotFoundException, BadRequestException {
+        Project project = projectService.findById(UUID.fromString(id));
+
+        if (project == null) {
+            throw new NotFoundException("Project not found");
+        }
+
+        if (project.getMembers().contains(UUID.fromString(memberId))) {
+            throw new BadRequestException("User is already a member of the project");
+        }
+
+        Project updatedProject = projectService.addMember(project, UUID.fromString(memberId));
+
+        return modelMapper.map(updatedProject, ProjectResponse.class);
     }
 
     /**
@@ -181,16 +198,28 @@ public class ProjectController {
      * @throws BadRequestException if the project doesn't has the member.
      */
     @DeleteMapping("/{id}/members/{memberId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Removes a member", response = void.class)
+    @Transactional
+    @ApiOperation(value = "Removes a member", response = ProjectResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public void removeMember(@ApiParam(required = true, value = "Id of the project") @PathVariable String id, @ApiParam(required = true, value = "Id of the member") @PathVariable String memberId) throws NotFoundException, BadRequestException {
-        throw new UnsupportedOperationException();
+    public ProjectResponse removeMember(@ApiParam(required = true, value = "Id of the project") @PathVariable String id, @ApiParam(required = true, value = "Id of the member") @PathVariable String memberId) throws NotFoundException, BadRequestException {
+        Project project = projectService.findById(UUID.fromString(id));
+
+        if (project == null) {
+            throw new NotFoundException("Project not found");
+        }
+
+        if (!project.getMembers().contains(UUID.fromString(memberId))) {
+            throw new BadRequestException("User is not a member of the project");
+        }
+
+        Project updatedProject = projectService.removeMember(project, UUID.fromString(memberId));
+
+        return modelMapper.map(updatedProject, ProjectResponse.class);
     }
 
     /**
@@ -209,6 +238,12 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public void deleteProject(@ApiParam(required = true, value = "Id of the project to delete") @PathVariable String id) throws NotFoundException {
-        throw new UnsupportedOperationException();
+        Project project = projectService.findById(UUID.fromString(id));
+
+        if (project == null) {
+            throw new NotFoundException("Project not found");
+        }
+
+        projectService.deleteProject(project);
     }
 }

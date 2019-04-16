@@ -108,7 +108,7 @@ public class MilestoneController {
         Milestone milestone = new Milestone();
         modelMapper.map(createMilestoneRequest, milestone);
 
-        Project project = projectService.getProjectById(UUID.fromString(createMilestoneRequest.getProject()));
+        Project project = projectService.findById(UUID.fromString(createMilestoneRequest.getProject()));
         if(project == null){
             throw new NotFoundException("Project not found");
         }

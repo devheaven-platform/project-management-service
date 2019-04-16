@@ -28,16 +28,16 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
     private Date start;
 
     @ApiModelProperty(required = true, value = "The owner of the project", example = "95fdb700-d772-4067-8296-89c4ceb73c5f")
-    private String owner;
+    private UUID owner;
 
     @ApiModelProperty(required = true, value = "The client of the project", example = "c34b267f-b81c-4060-b2bd-e09e3537472c")
-    private String client;
+    private UUID client;
 
     @ApiModelProperty(value = "The members of the project", example = "[]")
-    private List<String> members;
+    private List<UUID> members;
 
     @ApiModelProperty(value = "The boards of the project", example = "[]")
-    private List<String> boards;
+    private List<UUID> boards;
 
     @ApiModelProperty(value = "The milestones of the project", example = "[]")
     private SortedSet<MilestoneResponse> milestones;
@@ -151,7 +151,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @return the owner of the project.
      */
-    public String getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
@@ -160,7 +160,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @param owner the owner to set.
      */
-    public void setOwner(String owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 
@@ -169,7 +169,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @return the client of the project.
      */
-    public String getClient() {
+    public UUID getClient() {
         return client;
     }
 
@@ -178,7 +178,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @param client the client to set.
      */
-    public void setClient(String client) {
+    public void setClient(UUID client) {
         this.client = client;
     }
 
@@ -187,7 +187,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @return the members of the project.
      */
-    public List<String> getMembers() {
+    public List<UUID> getMembers() {
         return members;
     }
 
@@ -196,7 +196,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @param members the members to set.
      */
-    public void setMembers(List<String> members) {
+    public void setMembers(List<UUID> members) {
         this.members = members;
     }
 
@@ -205,7 +205,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @return the members of the project.
      */
-    public List<String> getBoards() {
+    public List<UUID> getBoards() {
         return boards;
     }
 
@@ -214,7 +214,7 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
      *
      * @param boards the boards to set.
      */
-    public void setBoards(List<String> boards) {
+    public void setBoards(List<UUID> boards) {
         this.boards = boards;
     }
 

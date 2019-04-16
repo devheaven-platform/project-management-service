@@ -3,6 +3,7 @@ package com.devheaven.service.requests;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * This response is used for creating a project.
@@ -22,10 +23,10 @@ public class CreateProjectRequest {
     private Date start;
 
     @ApiModelProperty(required = true, value = "The owner of the project", example = "95fdb700-d772-4067-8296-89c4ceb73c5f")
-    private String owner;
+    private UUID owner;
 
     @ApiModelProperty(required = true, value = "The client of the project", example = "c34b267f-b81c-4060-b2bd-e09e3537472c")
-    private String client;
+    private UUID client;
 
     /**
      * Gets the name of the project.
@@ -104,7 +105,7 @@ public class CreateProjectRequest {
      *
      * @return the owner of the project.
      */
-    public String getOwner() {
+    public UUID getOwner() {
         return owner;
     }
 
@@ -113,7 +114,7 @@ public class CreateProjectRequest {
      *
      * @param owner the owner to set.
      */
-    public void setOwner(String owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 
@@ -122,7 +123,7 @@ public class CreateProjectRequest {
      *
      * @return the client of the project.
      */
-    public String getClient() {
+    public UUID getClient() {
         return client;
     }
 
@@ -131,7 +132,7 @@ public class CreateProjectRequest {
      *
      * @param client the client to set.
      */
-    public void setClient(String client) {
+    public void setClient(UUID client) {
         this.client = client;
     }
 

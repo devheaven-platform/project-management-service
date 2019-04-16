@@ -24,12 +24,12 @@ public class ProjectService {
         return projectRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
-    public List<Project> findAllForMember(String id) {
+    public List<Project> findAllForMember(UUID id) {
         return projectRepository.findByMembersContains(id, Sort.by(Sort.Direction.ASC, "name"));
     }
 
-    public Project findProjectById(UUID id){
-        return projectRepository.getOne(id);
+    public Project findById(UUID id){
+        return projectRepository.findById(id).orElse(null);
     }
 
     public Project createProject(Project project) {
@@ -40,12 +40,12 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public Project addMember(Project project, String member) {
+    public Project addMember(Project project, UUID member) {
         project.addMember(member);
         return projectRepository.save(project);
     }
 
-    public Project removeMember(Project project, String member) {
+    public Project removeMember(Project project, UUID member) {
         project.removeMember(member);
         return projectRepository.save(project);
     }
