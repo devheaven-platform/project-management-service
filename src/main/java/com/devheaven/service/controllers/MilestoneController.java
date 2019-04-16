@@ -2,13 +2,17 @@ package com.devheaven.service.controllers;
 
 import com.devheaven.service.exceptions.InternalServerException;
 import com.devheaven.service.exceptions.NotFoundException;
+import com.devheaven.service.models.Milestone;
 import com.devheaven.service.requests.CreateMilestoneRequest;
 import com.devheaven.service.requests.UpdateMilestoneRequest;
 import com.devheaven.service.responses.MilestoneResponse;
+import com.devheaven.service.services.MilestoneService;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.SortedSet;
 
 /**
@@ -19,6 +23,9 @@ import java.util.SortedSet;
 @RequestMapping(path = "/milestones")
 @Api(tags = "Milestone")
 public class MilestoneController {
+
+    @Autowired
+    private MilestoneService milestoneService;
 
     /**
      * Handles the / route. This route returns all the milestones in the system.
@@ -69,6 +76,13 @@ public class MilestoneController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public MilestoneResponse createMilestone(@ApiParam("New User") @RequestBody CreateMilestoneRequest createMilestoneRequest) throws InternalServerException {
+        Milestone milestone = new Milestone();
+        milestone.setCreatedAt(new Date());
+        milestone.setDate(createMilestoneRequest.getDate());
+        milestone.setDescription(createMilestoneRequest.getDescription());
+        milestone.setName(createMilestoneRequest.getName());
+        //milestoneService.addMilestone(createMilestoneRequest.getProject(), milestone);
+
         throw new UnsupportedOperationException();
     }
 

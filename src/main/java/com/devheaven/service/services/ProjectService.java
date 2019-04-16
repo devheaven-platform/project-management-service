@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import java.util.UUID;
+
 @Service
 public class ProjectService {
 
@@ -22,11 +24,11 @@ public class ProjectService {
         return projectRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
-    public List<Project> findForUser(String id) {
+    public List<Project> findAllForMember(String id) {
         return projectRepository.findByMembersContains(id, Sort.by(Sort.Direction.ASC, "name"));
     }
 
-
-
-
+    public Project getProjectById(UUID id){
+        return projectRepository.getOne(id);
+    }
 }
