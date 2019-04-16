@@ -119,6 +119,10 @@ public class ProjectController {
     })
     public ProjectResponse createProject(@ApiParam("New User") @RequestBody CreateProjectRequest createProjectRequest) throws InternalServerException {
         Project newProject = modelMapper.map(createProjectRequest, Project.class);
+
+        // TODO: get owner id from token
+        newProject.setId(UUID.randomUUID());
+
         Project project = projectService.createProject(newProject);
         return modelMapper.map(project, ProjectResponse.class);
     }

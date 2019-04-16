@@ -22,8 +22,6 @@ public class CreateProjectRequest {
     @ApiModelProperty(required = true, value = "The start date of the project", example = "2019-01-01T00:00:00.000Z")
     private Date start;
 
-    @ApiModelProperty(required = true, value = "The owner of the project", example = "95fdb700-d772-4067-8296-89c4ceb73c5f")
-    private UUID owner;
 
     @ApiModelProperty(required = true, value = "The client of the project", example = "c34b267f-b81c-4060-b2bd-e09e3537472c")
     private UUID client;
@@ -98,24 +96,6 @@ public class CreateProjectRequest {
      */
     public void setStart(Date start) {
         this.start = start;
-    }
-
-    /**
-     * Gets the owner of the project.
-     *
-     * @return the owner of the project.
-     */
-    public UUID getOwner() {
-        return owner;
-    }
-
-    /**
-     * Sets the owner of the project.
-     *
-     * @param owner the owner to set.
-     */
-    public void setOwner(UUID owner) {
-        this.owner = owner;
     }
 
     /**
