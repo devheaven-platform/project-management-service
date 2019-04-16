@@ -28,7 +28,7 @@ public class ProjectService {
         return projectRepository.findByMembersContains(id, Sort.by(Sort.Direction.ASC, "name"));
     }
 
-    public Project getProjectById(UUID id){
+    public Project findProjectById(UUID id){
         return projectRepository.getOne(id);
     }
 
@@ -37,6 +37,16 @@ public class ProjectService {
     }
 
     public Project updateProject(Project project) {
+        return projectRepository.save(project);
+    }
+
+    public Project addMember(Project project, String member) {
+        project.addMember(member);
+        return projectRepository.save(project);
+    }
+
+    public Project removeMember(Project project, String member) {
+        project.removeMember(member);
         return projectRepository.save(project);
     }
 

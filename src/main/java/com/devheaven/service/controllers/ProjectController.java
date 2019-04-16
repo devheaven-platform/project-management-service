@@ -3,14 +3,21 @@ package com.devheaven.service.controllers;
 import com.devheaven.service.exceptions.BadRequestException;
 import com.devheaven.service.exceptions.InternalServerException;
 import com.devheaven.service.exceptions.NotFoundException;
+import com.devheaven.service.models.Project;
 import com.devheaven.service.requests.CreateProjectRequest;
 import com.devheaven.service.requests.UpdateProjectRequest;
 import com.devheaven.service.responses.ProjectResponse;
+import com.devheaven.service.services.ProjectService;
+import com.devheaven.service.utils.MergeUtility;
 import io.swagger.annotations.*;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.SortedSet;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * This controller handles the requests for the project model.
@@ -20,6 +27,16 @@ import java.util.SortedSet;
 @RequestMapping(path = "/projects")
 @Api(tags = "Project")
 public class ProjectController {
+
+    private final ProjectService projectService;
+
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+        this.modelMapper = new ModelMapper();
+    }
 
     /**
      * Handles the / route. This route returns all the projects in the system.
@@ -32,8 +49,9 @@ public class ProjectController {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public SortedSet<ProjectResponse> getProjects() {
-        throw new UnsupportedOperationException();
+    public List<ProjectResponse> getProjects() {
+        List<Project> projects = projectService.findAll();
+        return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {}.getType());
     }
 
     /**
@@ -52,7 +70,13 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public ProjectResponse getProjectById(@ApiParam(required = true, value = "Id of the project to retrieve") @PathVariable String id) throws NotFoundException {
-        throw new UnsupportedOperationException();
+        Project project = projectService.findProjectById(UUID.fromString(id));
+
+        if (project != null) {
+            throw new NotFoundException("Project not found");
+        }
+
+        return modelMapper.map(project, ProjectResponse.class);
     }
 
 
@@ -70,8 +94,9 @@ public class ProjectController {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public SortedSet<ProjectResponse> getProjectsForUser(@ApiParam(required = true, value = "Id of the user") @PathVariable String id) {
-        throw new UnsupportedOperationException();
+    public List<ProjectResponse> getProjectsForUser(@ApiParam(required = true, value = "Id of the user") @PathVariable String id) {
+        List<Project> projects = projectService.findAllForMember(id);
+        return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {}.getType());
     }
 
     /**
@@ -89,7 +114,9 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public ProjectResponse createProject(@ApiParam("New User") @RequestBody CreateProjectRequest createProjectRequest) throws InternalServerException {
-        throw new UnsupportedOperationException();
+        Project newProject = modelMapper.map(createProjectRequest, Project.class);
+        Project project = projectService.createProject(newProject);
+        return modelMapper.map(project, ProjectResponse.class);
     }
 
     /**
@@ -109,7 +136,17 @@ public class ProjectController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public ProjectResponse updateProject(@ApiParam(required = true, value = "Id of the project to update") @PathVariable String id, @ApiParam("Update Data") @RequestBody UpdateProjectRequest updateProjectRequest) throws NotFoundException {
-        throw new UnsupportedOperationException();
+        Project existingProject = projectService.findProjectById(UUID.fromString(id));
+
+        if (existingProject == null) {
+            throw new NotFoundException("Project not found");
+        }
+
+        Project updateProject = MergeUtility.merge(modelMapper.map(updateProjectRequest, Project.class), existingProject);
+
+        Project project = projectService.updateProject(updateProject);
+
+        return modelMapper.map(project, ProjectResponse.class);
     }
 
     /**

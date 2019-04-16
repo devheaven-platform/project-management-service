@@ -208,6 +208,14 @@ public class Project implements Comparable<Project> {
         this.members = members;
     }
 
+    public boolean addMember(String member) {
+        return members.add(member);
+    }
+
+    public boolean removeMember(String member) {
+        return members.remove(member);
+    }
+
     /**
      * Gets the boards of the project.
      *
