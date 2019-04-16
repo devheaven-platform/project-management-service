@@ -121,7 +121,7 @@ public class ProjectController {
         Project newProject = modelMapper.map(createProjectRequest, Project.class);
 
         // TODO: get owner id from token
-        newProject.setId(UUID.randomUUID());
+        newProject.setOwner(UUID.randomUUID());
 
         Project project = projectService.createProject(newProject);
         return modelMapper.map(project, ProjectResponse.class);
