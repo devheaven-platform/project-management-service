@@ -31,4 +31,16 @@ public class ProjectService {
     public Project getProjectById(UUID id){
         return projectRepository.getOne(id);
     }
+
+    public Project createProject(Project project) {
+        return projectRepository.save(project);
+    }
+
+    public Project updateProject(Project project) {
+        return projectRepository.save(project);
+    }
+
+    public void deleteProject(Project project) {
+        projectRepository.delete(project);
+    }
 }
