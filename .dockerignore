@@ -1,0 +1,20 @@
+# Build
+out/
+target/
+
+# Intellij
+.idea/
+.idea_modules/
+Kwetter.iml
+
+# Docker
+.dockerignore
+docker-compose.yml
+Dockerfile
+
+# Git
+README.md
+
+# Custom
+.env
+.env.example

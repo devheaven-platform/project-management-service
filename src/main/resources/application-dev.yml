@@ -1,0 +1,25 @@
+spring:
+  # Setup database connection
+  datasource:
+    url: jdbc:h2:mem:devheaven-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: null
+  # Setup hibernate
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  # Configure exceptions and disable automatic mapping of resources
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+springfox:
+  # Configure swagger to listen on /docs/ instead of /v2/api-docs
+  documentation:
+    swagger:
+      v2:
+        path: '/docs/'

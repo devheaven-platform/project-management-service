@@ -1,0 +1,50 @@
+server:
+  port: ${SPRING_PORT}
+  address: ${SPRING_HOST}
+
+spring:
+  # Setup database connection
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  # Setup hibernate
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  # Configure exceptions and disable automatic mapping of resources
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+management:
+  endpoints:
+    web:
+      base-path: '/metrics'
+      exposure:
+        include: "prometheus"
+    enabled-by-default: false
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+springfox:
+  # Configure swagger to listen on /docs/ instead of /v2/api-docs
+  documentation:
+    swagger:
+      v2:
+        path: '/docs/'
