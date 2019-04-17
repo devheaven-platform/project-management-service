@@ -24,7 +24,7 @@ public class ProjectService {
      * @return a list of projects.
      */
     public List<Project> findAll() {
-        return projectRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        return projectRepository.findAll(Sort.by(Sort.Direction.DESC, "name"));
     }
 
     /**
@@ -35,7 +35,7 @@ public class ProjectService {
      * @return a list of projects.
      */
     public List<Project> findAllForMember(UUID id) {
-        return projectRepository.findByMembersContains(id, Sort.by(Sort.Direction.ASC, "name"));
+        return projectRepository.findByMembersContains(id, Sort.by(Sort.Direction.DESC, "name"));
     }
 
     /**

@@ -30,7 +30,7 @@ public class MilestoneService {
      * @return a list of milestones.
      */
     public List<Milestone> findAll(){
-        return milestoneRepository.findAll(Sort.by(Sort.Direction.ASC, "date"));
+        return milestoneRepository.findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
     /**
@@ -39,7 +39,7 @@ public class MilestoneService {
      * @param id the id of the milestone to retrieve.
      * @return the found milestone or null.
      */
-    public Milestone getMilestoneById(UUID id){
+    public Milestone findById(UUID id){
         return milestoneRepository.findById(id).orElse(null);
     }
 
@@ -65,8 +65,8 @@ public class MilestoneService {
      * @param milestone the milestone to update.
      * @return the updated milestone.
      */
-    public void updateMilestone(Milestone milestone){
-        milestoneRepository.save(milestone);
+    public Milestone updateMilestone(Milestone milestone){
+        return milestoneRepository.save(milestone);
     }
 
     /**
@@ -75,6 +75,8 @@ public class MilestoneService {
      * @param milestone the milestone to delete.
      */
     public void deleteMilestone(Milestone milestone){
+        // TODO: probably delete milestone from project or use some type of cascade
+
         milestoneRepository.delete(milestone);
     }
 }
