@@ -3,6 +3,7 @@ package com.devheaven.service.responses;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -30,7 +31,8 @@ public class MilestoneResponse implements Comparable<MilestoneResponse> {
 
     @Override
     public int compareTo(MilestoneResponse milestoneResponse) {
-        return date.compareTo(milestoneResponse.date);
+        int result = date.compareTo(milestoneResponse.date);
+        return result != 0 ? result : name.compareTo(milestoneResponse.name);
     }
 
     /**

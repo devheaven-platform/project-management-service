@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -35,7 +36,8 @@ public class Milestone implements Comparable<Milestone> {
 
     @Override
     public int compareTo(Milestone milestone) {
-        return date.compareTo(milestone.date);
+        int result = date.compareTo(milestone.date);
+        return result != 0 ? result : name.compareTo(milestone.name);
     }
 
     /**

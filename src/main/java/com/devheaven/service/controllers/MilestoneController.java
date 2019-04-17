@@ -15,9 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +38,7 @@ public class MilestoneController {
      * Constructor for the milestone controller.
      *
      * @param milestoneService the milestone service to interact with the data access layer.
-     * @param projectService  the project service to interact with the data access layer.
+     * @param projectService   the project service to interact with the data access layer.
      */
     @Autowired
     public MilestoneController(MilestoneService milestoneService, ProjectService projectService) {
@@ -60,7 +60,8 @@ public class MilestoneController {
     })
     public List<MilestoneResponse> getMilestones() {
         List<Milestone> milestones = milestoneService.findAll();
-        return modelMapper.map(milestones, new TypeToken<List<MilestoneResponse>>() {}.getType());
+        return modelMapper.map(milestones, new TypeToken<List<MilestoneResponse>>() {
+        }.getType());
     }
 
     /**
@@ -79,23 +80,24 @@ public class MilestoneController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public MilestoneResponse getMilestoneById(@ApiParam(required = true, value = "Id of the milestone to retrieve") @PathVariable String id) throws NotFoundException {
-       Milestone milestone = milestoneService.findById(UUID.fromString(id));
+        Milestone milestone = milestoneService.findById(UUID.fromString(id));
 
-       if(milestone == null){
-           throw new NotFoundException("Milestone not found");
-       }
+        if (milestone == null) {
+            throw new NotFoundException("Milestone not found");
+        }
 
-       return modelMapper.map(milestone, MilestoneResponse.class);
+        return modelMapper.map(milestone, MilestoneResponse.class);
     }
 
     /**
      * Handles the / route. This route adds a new milestone to the system.
      *
-     * @param  createMilestoneRequest create milestone request containing the values from the form.
+     * @param createMilestoneRequest create milestone request containing the values from the form.
      * @return MilestoneResponse containing data about the created milestone.
      * @throws InternalServerException if an error occurred while creating the milestone.
      */
     @PostMapping("/")
+    @Transactional
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiOperation(value = "Adds a new milestone to the system", response = MilestoneResponse.class)
     @ApiResponses(value = {
@@ -106,11 +108,14 @@ public class MilestoneController {
         Milestone newMilestone = modelMapper.map(createMilestoneRequest, Milestone.class);
 
         Project project = projectService.findById(UUID.fromString(createMilestoneRequest.getProject()));
-        if(project == null){
+        if (project == null) {
             throw new NotFoundException("Project not found");
         }
 
         Milestone milestone = milestoneService.createMilestone(project, newMilestone);
+        if (milestone == null) {
+            throw new InternalServerException("An error occurred while storing the milestone");
+        }
 
         return modelMapper.map(milestone, MilestoneResponse.class);
     }
@@ -118,7 +123,7 @@ public class MilestoneController {
     /**
      * Handles the /{id} route. This route updates one specific milestone.
      *
-     * @param id the id of the milestone to update.
+     * @param id                     the id of the milestone to update.
      * @param updateMilestoneRequest the update request containing the data from the form.
      * @return MilestoneResponse the updated milestone.
      * @throws NotFoundException if the milestone is not found.
@@ -153,6 +158,7 @@ public class MilestoneController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Transactional
     @ApiOperation(value = "Delete one specific milestone", response = void.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -163,7 +169,7 @@ public class MilestoneController {
     public void deleteMilestone(@ApiParam(required = true, value = "Id of the milestone to delete") @PathVariable String id) throws NotFoundException {
         Milestone milestone = milestoneService.findById(UUID.fromString(id));
 
-        if(milestone == null){
+        if (milestone == null) {
             throw new NotFoundException("Milestone not found");
         }
 

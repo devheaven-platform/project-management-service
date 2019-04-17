@@ -44,7 +44,7 @@ public class ProjectService {
      * @param id the id of the project to retrieve.
      * @return the found project or null.
      */
-    public Project findById(UUID id){
+    public Project findById(UUID id) {
         return projectRepository.findById(id).orElse(null);
     }
 
@@ -72,7 +72,7 @@ public class ProjectService {
      * Adds a member to a project.
      *
      * @param project the project to add the member to.
-     * @param member the id of the member to add.
+     * @param member  the id of the member to add.
      * @return the updated project.
      */
     public Project addMember(Project project, UUID member) {
@@ -84,7 +84,7 @@ public class ProjectService {
      * Removes a member from a project.
      *
      * @param project the project to remove the member from.
-     * @param member the id of the member to remove.
+     * @param member  the id of the member to remove.
      * @return the updated project.
      */
     public Project removeMember(Project project, UUID member) {

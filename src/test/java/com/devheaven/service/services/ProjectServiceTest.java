@@ -21,20 +21,10 @@ import static org.mockito.ArgumentMatchers.notNull;
 @RunWith(SpringRunner.class)
 public class ProjectServiceTest {
 
-    @TestConfiguration
-    static class ProjectServiceTestContextConfiguration {
-        @Bean
-        public ProjectService projectService() {
-            return new ProjectService();
-        }
-    }
-
     @Autowired
     private ProjectService projectService;
-
     @MockBean
     private ProjectRepository projectRepository;
-
     private Project project;
     private List<UUID> members;
 
@@ -51,11 +41,11 @@ public class ProjectServiceTest {
         project.setMembers(members);
         project.addMember(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"));
 
-        Mockito.when(projectRepository.findAll(Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>(){{
+        Mockito.when(projectRepository.findAll(Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>() {{
             add(project);
         }});
 
-        Mockito.when(projectRepository.findByMembersContains(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>(){{
+        Mockito.when(projectRepository.findByMembersContains(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>() {{
             add(project);
         }});
         Mockito.when(projectRepository.findByMembersContains(UUID.fromString("74e52b1d-c0db-4a89-a93f-2439a2c208f8"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<>());
@@ -162,5 +152,13 @@ public class ProjectServiceTest {
     @Test
     public void deleteProject() {
         projectService.deleteProject(project);
+    }
+
+    @TestConfiguration
+    static class ProjectServiceTestContextConfiguration {
+        @Bean
+        public ProjectService projectService() {
+            return new ProjectService();
+        }
     }
 }

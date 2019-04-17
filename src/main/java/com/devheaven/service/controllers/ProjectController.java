@@ -53,7 +53,8 @@ public class ProjectController {
     })
     public List<ProjectResponse> getProjects() {
         List<Project> projects = projectService.findAll();
-        return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {}.getType());
+        return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {
+        }.getType());
     }
 
     /**
@@ -100,7 +101,8 @@ public class ProjectController {
     })
     public List<ProjectResponse> getProjectsForUser(@ApiParam(required = true, value = "Id of the user") @PathVariable String id) {
         List<Project> projects = projectService.findAllForMember(UUID.fromString(id));
-        return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {}.getType());
+        return modelMapper.map(projects, new TypeToken<List<ProjectResponse>>() {
+        }.getType());
     }
 
     /**
@@ -124,13 +126,17 @@ public class ProjectController {
         newProject.setOwner(UUID.randomUUID());
 
         Project project = projectService.createProject(newProject);
+        if (project == null) {
+            throw new InternalServerException("An error occurred while storing the project");
+        }
+
         return modelMapper.map(project, ProjectResponse.class);
     }
 
     /**
      * Handles the /{id} route. This route updates one specific project.
      *
-     * @param id the id of the project to update.
+     * @param id                   the id of the project to update.
      * @param updateProjectRequest the update request containing the data from the form.
      * @return ProjectResponse the updated project.
      * @throws NotFoundException if the project is not found.
@@ -162,7 +168,7 @@ public class ProjectController {
      * Handles the /project/{id}/members/{memberId} route. This route adds a user
      * to a project.
      *
-     * @param id the id of the project.
+     * @param id       the id of the project.
      * @param memberId the id of the member.
      * @throws NotFoundException   if the project is not found.
      * @throws BadRequestException if the project already has the member.
@@ -196,7 +202,7 @@ public class ProjectController {
      * Handles the /project/{id}/members/{memberId} route. This route removes a user
      * from a project.
      *
-     * @param id the id of the project.
+     * @param id       the id of the project.
      * @param memberId the id of the member.
      * @throws NotFoundException   if the project is not found.
      * @throws BadRequestException if the project doesn't has the member.
@@ -233,6 +239,7 @@ public class ProjectController {
      * @throws NotFoundException if the project is not found.
      */
     @DeleteMapping("/{id}")
+    @Transactional
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete one specific project", response = void.class)
     @ApiResponses(value = {

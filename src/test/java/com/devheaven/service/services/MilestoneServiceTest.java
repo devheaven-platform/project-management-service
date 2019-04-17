@@ -17,37 +17,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.notNull;
 
 
 @RunWith(SpringRunner.class)
 public class MilestoneServiceTest {
 
-    @TestConfiguration
-    static class ProjectServiceTestContextConfiguration {
-        @Bean
-        public ProjectService projectService() {
-            return new ProjectService();
-        }
-
-        @Bean
-        public MilestoneService milestoneService() {
-            return new MilestoneService();
-        }
-    }
-
     @Autowired
     private ProjectService projectService;
-
     @Autowired
     private MilestoneService milestoneService;
-
     @MockBean
     private ProjectRepository projectRepository;
     @MockBean
     private MilestoneRepository milestoneRepository;
-
     private Project project;
     private Milestone milestone;
 
@@ -63,6 +48,7 @@ public class MilestoneServiceTest {
         project.addMember(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"));
 
         Mockito.when(projectRepository.findById(UUID.fromString("cf023055-af8e-42bf-9d2e-cfe37cefa237"))).thenReturn(Optional.of(project));
+        Mockito.when(projectRepository.save(notNull())).thenReturn(project);
 
         milestone = new Milestone();
         milestone.setId(UUID.fromString("cf023055-af8e-42bf-9d2e-cfe37cefaFFF"));
@@ -70,7 +56,7 @@ public class MilestoneServiceTest {
         milestone.setDescription("Description 1");
         milestone.setDate(new Date());
 
-        Mockito.when(milestoneRepository.findAll(Sort.by(Sort.Direction.DESC, "date"))).thenReturn(new ArrayList<Milestone>(){{
+        Mockito.when(milestoneRepository.findAll(Sort.by(Sort.Direction.ASC, "date"))).thenReturn(new ArrayList<Milestone>() {{
             add(milestone);
         }});
 
@@ -132,5 +118,18 @@ public class MilestoneServiceTest {
     @Test
     public void deleteMilestone() {
         milestoneService.deleteMilestone(milestone);
+    }
+
+    @TestConfiguration
+    static class ProjectServiceTestContextConfiguration {
+        @Bean
+        public ProjectService projectService() {
+            return new ProjectService();
+        }
+
+        @Bean
+        public MilestoneService milestoneService() {
+            return new MilestoneService();
+        }
     }
 }

@@ -40,7 +40,7 @@ public class Project implements Comparable<Project> {
     private List<UUID> boards;
 
     @SortNatural
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private SortedSet<Milestone> milestones;
 
     private boolean archived;
@@ -52,17 +52,18 @@ public class Project implements Comparable<Project> {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @Override
-    public int compareTo(Project project) {
-        return name.compareTo(project.name);
-    }
-
     /**
      * Constructor for the project model.
      */
     public Project() {
         members = new ArrayList<>();
+        boards = new ArrayList<>();
         milestones = new TreeSet<>();
+    }
+
+    @Override
+    public int compareTo(Project project) {
+        return name.compareTo(project.name);
     }
 
     /**
