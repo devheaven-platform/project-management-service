@@ -1,0 +1,50 @@
+pipeline:
+  test:
+    image: java:openjdk-7
+    commands:
+      - ./mvnw install -q
+    when:
+      branch: master
+      event: pull_request
+
+  publish-staging:
+    image: plugins/docker
+    repo: devheavenci/project-management
+    tags: "${DRONE_COMMIT_SHA:0:8}"
+    secrets: [ docker_username, docker_password ]
+    when:
+      branch: master
+      event: push
+
+  publish-production:
+    image: plugins/docker
+    repo: devheavenci/project-management
+    tags: "${DRONE_TAG##v}"
+    secrets: [ docker_username, docker_password ]
+    when:
+      event: tag
+
+  deploy-staging:
+    image: quay.io/honestbee/drone-kubernetes
+    namespace: staging
+    deployment: project-management-deployment
+    repo: devheavenci/project-management
+    container: project-management
+    tag: "${DRONE_COMMIT_SHA:0:8}"
+    secrets: [ kubernetes_server, kubernetes_token, kubernetes_cert ]
+    when:
+      branch: master
+      event: push
+
+  deploy-production:
+    image: quay.io/honestbee/drone-kubernetes
+    namespace: production
+    deployment: project-management-deployment
+    repo: devheavenci/project-management
+    container: project-management
+    tag: "${DRONE_TAG##v}"
+    secrets: [ kubernetes_server, kubernetes_token, kubernetes_cert ]
+    when:
+      event: tag
+
+branches: master
