@@ -209,10 +209,22 @@ public class Project implements Comparable<Project> {
         this.members = members;
     }
 
+    /**
+     * Adds a member to a project.
+     *
+     * @param member the member to add.
+     * @return whether the member was added.
+     */
     public boolean addMember(UUID member) {
         return members.add(member);
     }
 
+    /**
+     * Removes a member from a project.
+     *
+     * @param member the member to remove.
+     * @return whether the member was removed.
+     */
     public boolean removeMember(UUID member) {
         return members.remove(member);
     }
@@ -236,6 +248,26 @@ public class Project implements Comparable<Project> {
     }
 
     /**
+     * Adds a board to a project.
+     *
+     * @param board the board to add.
+     * @return whether the board was added.
+     */
+    public boolean addBoard(UUID board) {
+        return boards.add(board);
+    }
+
+    /**
+     * Removes a board from a project.
+     *
+     * @param board the board to remove.
+     * @return whether the board was removed.
+     */
+    public boolean removeBoard(UUID board) {
+        return boards.remove(board);
+    }
+
+    /**
      * Gets the milestones of the project.
      *
      * @return the milestones of the project.
@@ -251,6 +283,26 @@ public class Project implements Comparable<Project> {
      */
     public void setMilestones(SortedSet<Milestone> milestones) {
         this.milestones = milestones;
+    }
+
+    /**
+     * Adds a milestone to a project.
+     *
+     * @param milestone the milestone to add.
+     * @return whether the milestone was added.
+     */
+    public boolean addMilestone(Milestone milestone) {
+        return milestones.add(milestone);
+    }
+
+    /**
+     * Removes a milestone from a project.
+     *
+     * @param milestone the milestone to remove.
+     * @return whether the milestone was removed.
+     */
+    public boolean removeMilestone(Milestone milestone) {
+        return milestones.remove(milestones.stream().filter(m -> m.getId().equals(milestone.getId())).findFirst().orElse(null));
     }
 
     /**

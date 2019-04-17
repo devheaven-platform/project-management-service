@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.UUID;
 
+/**
+ * Interacts with the data access layer.
+ */
 @Service
 public class MilestoneService {
 
@@ -21,25 +24,56 @@ public class MilestoneService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    /**
+     * Gets all milestones in the system.
+     *
+     * @return a list of milestones.
+     */
     public List<Milestone> findAll(){
         return milestoneRepository.findAll(Sort.by(Sort.Direction.ASC, "date"));
     }
 
+    /**
+     * Gets one milestone by its id.
+     *
+     * @param id the id of the milestone to retrieve.
+     * @return the found milestone or null.
+     */
     public Milestone getMilestoneById(UUID id){
         return milestoneRepository.findById(id).orElse(null);
     }
 
-    public void createMilestone(Project project, Milestone milestone){
-        SortedSet<Milestone> milestones = project.getMilestones();
-        milestones.add(milestone);
-        project.setMilestones(milestones);
+    /**
+     * Adds a new milestone to the system.
+     *
+     * @param project the project to add the milestone to.
+     * @param newMilestone the milestone to add.
+     * @return the new milestone.
+     */
+    public Milestone createMilestone(Project project, Milestone newMilestone){
+        Milestone milestone = milestoneRepository.save(newMilestone);
+
+        project.addMilestone(milestone);
         projectRepository.save(project);
+
+        return milestone;
     }
 
+    /**
+     * Updates a existing milestone.
+     *
+     * @param milestone the milestone to update.
+     * @return the updated milestone.
+     */
     public void updateMilestone(Milestone milestone){
         milestoneRepository.save(milestone);
     }
 
+    /**
+     * Deletes a milestone.
+     *
+     * @param milestone the milestone to delete.
+     */
     public void deleteMilestone(Milestone milestone){
         milestoneRepository.delete(milestone);
     }

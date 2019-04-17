@@ -106,19 +106,16 @@ public class MilestoneController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     public MilestoneResponse createMilestone(@ApiParam("New User") @RequestBody CreateMilestoneRequest createMilestoneRequest) throws InternalServerException, NotFoundException {
-        Milestone milestone = new Milestone();
-        modelMapper.map(createMilestoneRequest, milestone);
+        Milestone newMilestone = modelMapper.map(createMilestoneRequest, Milestone.class);
 
         Project project = projectService.findById(UUID.fromString(createMilestoneRequest.getProject()));
         if(project == null){
             throw new NotFoundException("Project not found");
         }
-        milestoneService.createMilestone(project, milestone);
 
-        MilestoneResponse milestoneResponse = new MilestoneResponse();
-        modelMapper.map(milestone, milestoneResponse);
+        Milestone milestone = milestoneService.createMilestone(project, newMilestone);
 
-        return milestoneResponse;
+        return modelMapper.map(milestone, MilestoneResponse.class);
     }
 
     /**
