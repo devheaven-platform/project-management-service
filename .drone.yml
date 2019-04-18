@@ -1,7 +1,8 @@
 pipeline:
   test:
-    image: java:openjdk-8:latest
+    image: java:openjdk-8
     commands:
+      - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"vxmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd"><localRepository>'$PWD'.m2</localRepository></settings>' > $HOME/.m2/settings.xml
       - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -T 2C
       - ./mvn test -B
     when:
