@@ -1,10 +1,7 @@
 pipeline:
   test:
-    image: openjdk:8-jdk-alpine
-    environment:
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
-    commands:
-      - ./mvnw clean test --debug --fail-fast --errors --batch-mode
+    image: openjdk
+    commands: ./mvnw clean test
     when:
       branch: master
       event: pull_request
