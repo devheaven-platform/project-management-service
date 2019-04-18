@@ -1,8 +1,8 @@
 pipeline:
   test:
-    image: maven
+    image: openjdk:8-jdk-alpine
     commands:
-      - ./mvnw test -B
+      - ./mvnw clean test --debug --fail-fast --errors --batch-mode
     when:
       branch: master
       event: pull_request
