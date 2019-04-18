@@ -1,6 +1,6 @@
 pipeline:
   test:
-    image: java:openjdk-8
+    image: maven
     commands:
       - ./mvnw test -B
     when:
