@@ -2,7 +2,7 @@ pipeline:
   test:
     image: java:openjdk-8
     commands:
-      - ./mvnw install -q -B -V
+      - mvn test -q -B -V
     when:
       branch: master
       event: pull_request
