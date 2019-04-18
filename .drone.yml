@@ -1,9 +1,11 @@
 pipeline:
   test:
-    image: maven:3-jdk-8
+    image: java:openjdk-7
+    environment:
+      MAVEN_OPTS: -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
     commands:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-      - mvn test -B
+      - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - ./mvn test -B
     when:
       branch: master
       event: pull_request
