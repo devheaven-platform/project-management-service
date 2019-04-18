@@ -4,7 +4,7 @@ pipeline:
     environment:
       MAVEN_OPTS: -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
     commands:
-      - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V --debug --errors
       - ./mvn test -B
     when:
       branch: master
