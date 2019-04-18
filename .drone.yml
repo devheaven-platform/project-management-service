@@ -1,10 +1,14 @@
 pipeline:
   test:
-    image: java:openjdk-7
-    environment:
-      MAVEN_OPTS: -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
+    image: java:openjdk-8:latest
     commands:
-      - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V --debug --errors
+      - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                            https://maven.apache.org/xsd/settings-1.0.0.xsd">
+                <localRepository>'$PWD'.m2</localRepository>
+          </settings>' > $HOME/.m2/settings.xml
+      - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -T 2C
       - ./mvn test -B
     when:
       branch: master
