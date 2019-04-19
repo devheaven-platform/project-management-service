@@ -4,7 +4,7 @@ pipeline:
     environment:
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -DdependencyLocationsEnabled=false
     commands:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -T 4C
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -T 12
       - mvn test -B
     when:
       branch: master
