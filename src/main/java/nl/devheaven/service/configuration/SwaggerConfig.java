@@ -43,7 +43,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.devheaven.service"))
+                .apis(RequestHandlerSelectors.basePackage("nl.devheaven.service"))
                 .paths(Predicates.not(PathSelectors.regex("/error")))
                 .build()
                 .apiInfo(metadata())

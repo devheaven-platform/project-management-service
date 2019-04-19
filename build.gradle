@@ -1,0 +1,44 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.2.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'nl.devheaven'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+	// Metrics
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	compile group: 'io.micrometer', name: 'micrometer-core', version: '1.1.4'
+	compile group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.1.4'
+
+	// Data
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly group: 'com.h2database', name: 'h2', version: '1.4.199'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// API
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	compile group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '2.3.3'
+
+	// Devtools
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+}
