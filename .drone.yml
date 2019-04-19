@@ -2,7 +2,6 @@ pipeline:
   test:
     image: openjdk:8-jdk
     commands:
-      - ls -al
       - ./gradlew build --quiet --stacktrace
       - ./gradlew test --tests 'nl.devheaven.service*' --quiet
     when:
