@@ -2,9 +2,9 @@ pipeline:
   test:
     image: maven:3-jdk-8
     environment:
-      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -DdependencyLocationsEnabled=false -Djava.net.preferIPv4Stack=true
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -DdependencyLocationsEnabled=false
     commands:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -T 2C
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -e -B -V -T 2C
       - mvn test -B
     when:
       branch: master
