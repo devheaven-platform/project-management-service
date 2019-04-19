@@ -2,6 +2,7 @@ pipeline:
   test:
     image: gradle:jdk8
     commands:
+      - mkdir .gradle
       - gradle build --quiet --stacktrace
       - gradle test --tests 'nl.devheaven.service*' --quiet
     when:
