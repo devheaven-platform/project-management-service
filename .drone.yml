@@ -1,10 +1,9 @@
 pipeline:
   test:
-    image: gradle:jdk8
+    image: openjdk:8-jdk
     commands:
-      - mkdir .gradle
-      - gradle build --quiet --stacktrace
-      - gradle test --tests 'nl.devheaven.service*' --quiet
+      - ./gradlew build --quiet --stacktrace
+      - ./gradlew test --tests 'nl.devheaven.service*' --quiet
     when:
       branch: master
       event: pull_request
