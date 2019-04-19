@@ -4,8 +4,8 @@ pipeline:
     environment:
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -DdependencyLocationsEnabled=false
     commands:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -e -B -V -T 2C
-      - mvn test -B
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -e -B -T 2C
+      - mvn test -e -B -T 2C
     when:
       branch: master
       event: pull_request
