@@ -41,6 +41,8 @@ management:
     export:
       prometheus:
         enabled: true
+    tags:
+      application: Project-Management-Service
 
 springfox:
   # Configure swagger to listen on /docs/ instead of /v2/api-docs
