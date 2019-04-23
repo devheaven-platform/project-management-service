@@ -19,6 +19,9 @@ public class CreateProjectRequest {
     @ApiModelProperty(value = "The budget of the project", example = "100")
     private float budget;
 
+    @ApiModelProperty(value = "The duration of the project", example = "100")
+    private float duration;
+
     @ApiModelProperty(required = true, value = "The start date of the project", example = "2019-01-01T00:00:00.000Z")
     private Date start;
 
@@ -112,8 +115,25 @@ public class CreateProjectRequest {
      *
      * @param client the client to set.
      */
+
     public void setClient(UUID client) {
         this.client = client;
     }
+    /**
+     * Gets the duration of the project.
+     *
+     * @return the duration of the project.
+     */
+    public float getDuration() {
+        return duration;
+    }
 
+    /**
+     * Sets the duration of the project.
+     *
+     * @param duration the budget to set.
+     */
+    public void setDuration(float duration) {
+        this.duration = duration;
+    }
 }

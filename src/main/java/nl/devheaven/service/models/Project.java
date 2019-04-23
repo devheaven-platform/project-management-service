@@ -23,6 +23,8 @@ public class Project implements Comparable<Project> {
 
     private String description;
 
+    private float duration;
+
     private float budget;
 
     private Date start;
