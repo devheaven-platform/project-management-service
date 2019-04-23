@@ -27,15 +27,4 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
     }
-
-    /**
-     * Adds cors mapping to allow access from anywhere.
-     *
-     * @param registry the cors registry.
-     */
-    @Override
-    protected void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*");
-    }
-
 }
