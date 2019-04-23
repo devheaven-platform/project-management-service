@@ -24,6 +24,9 @@ public class ProjectResponse implements Comparable<ProjectResponse> {
     @ApiModelProperty(value = "The budget of the project", example = "100")
     private float budget;
 
+    @ApiModelProperty(value = "The duration of the project", example = "100")
+    private float duration;
+
     @ApiModelProperty(required = true, value = "The start date of the project", example = "2019-01-01T00:00:00.000Z")
     private Date start;
 
