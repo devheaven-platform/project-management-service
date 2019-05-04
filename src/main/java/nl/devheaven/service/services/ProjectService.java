@@ -1,9 +1,6 @@
 package nl.devheaven.service.services;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.devheaven.service.models.Project;
 import nl.devheaven.service.repositories.ProjectRepository;
@@ -36,10 +33,13 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    private final ObjectMapper objectMapper;
+
+    public ProjectService() {
+        objectMapper = new ObjectMapper();
+    }
 
     /**
      * Gets all projects in the system.

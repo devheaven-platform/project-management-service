@@ -11,11 +11,13 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +27,8 @@ public class ProjectServiceTest {
     private ProjectService projectService;
     @MockBean
     private ProjectRepository projectRepository;
+    @MockBean
+    private KafkaTemplate<String, String> kafkaTemplate;
     private Project project;
     private List<UUID> members;
 
@@ -54,6 +58,8 @@ public class ProjectServiceTest {
         Mockito.when(projectRepository.findById(UUID.fromString("b9c0dce0-b047-43f8-960d-53aca1a9fa26"))).thenReturn(Optional.empty());
 
         Mockito.when(projectRepository.save(notNull())).thenReturn(project);
+
+        Mockito.when(kafkaTemplate.send(eq("db.project-management.delete-project"), notNull())).thenReturn(null);
     }
 
     @Test
