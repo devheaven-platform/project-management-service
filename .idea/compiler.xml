@@ -12,6 +12,8 @@
       <module name="nl.devheaven.project-management-service.main" target="1.8" />
       <module name="nl.devheaven.project-management-service.test" target="1.8" />
       <module name="project-management-service" target="1.8" />
+      <module name="project-management-service.nl.devheaven.project-management-service.main" target="1.8" />
+      <module name="project-management-service.nl.devheaven.project-management-service.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

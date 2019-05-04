@@ -45,10 +45,10 @@ public class ProjectServiceTest {
             add(project);
         }});
 
-        Mockito.when(projectRepository.findByMembersContains(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>() {{
+        Mockito.when(projectRepository.findByMembersContainsOrOwnerEquals(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>() {{
             add(project);
         }});
-        Mockito.when(projectRepository.findByMembersContains(UUID.fromString("74e52b1d-c0db-4a89-a93f-2439a2c208f8"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<>());
+        Mockito.when(projectRepository.findByMembersContainsOrOwnerEquals(UUID.fromString("74e52b1d-c0db-4a89-a93f-2439a2c208f8"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<>());
 
         Mockito.when(projectRepository.findById(UUID.fromString("cf023055-af8e-42bf-9d2e-cfe37cefa237"))).thenReturn(Optional.of(project));
         Mockito.when(projectRepository.findById(UUID.fromString("b9c0dce0-b047-43f8-960d-53aca1a9fa26"))).thenReturn(Optional.empty());

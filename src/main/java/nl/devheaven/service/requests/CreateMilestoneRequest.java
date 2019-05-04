@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 
 /**
- * This response is used for creating a milestone.
+ * This request is used for creating a milestone.
  */
 public class CreateMilestoneRequest {
 

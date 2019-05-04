@@ -26,6 +26,14 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
+  # Setup kafka
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: ${KAFKA_GROUP_ID}
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 management:
   endpoints:

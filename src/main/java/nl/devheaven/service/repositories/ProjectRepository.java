@@ -17,13 +17,13 @@ import java.util.UUID;
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     /**
-     * Gets all projects that have a specific member.
+     * Gets all projects that have a specific member or owner.
      *
      * @param member the member to get the project for.
      * @param sort   the value to sort on.
      * @return list of projects.
      */
-    List<Project> findByMembersContains(UUID member, Sort sort);
+    List<Project> findByMembersContainsOrOwnerEquals(UUID member, Sort sort);
 
     /**
      * Returns a project containing a
@@ -33,5 +33,14 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
      * @return project or null
      */
     Optional<Project> findFirstByMilestonesContains(Milestone milestone);
+
+    /**
+     * Returns a project containing a
+     * specific board.
+     *
+     * @param board the board to search for.
+     * @return project or null.
+     */
+    Optional<Project> findFirstByBoardsContains(UUID board);
 
 }

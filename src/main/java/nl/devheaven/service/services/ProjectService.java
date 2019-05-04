@@ -1,13 +1,28 @@
 package nl.devheaven.service.services;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.devheaven.service.models.Project;
 import nl.devheaven.service.repositories.ProjectRepository;
+import nl.devheaven.service.requests.AddBoardRequest;
+import nl.devheaven.service.requests.DeleteBoardRequest;
+import nl.devheaven.service.requests.DeleteProjectRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Interacts with the data access layer.
@@ -15,8 +30,16 @@ import java.util.UUID;
 @Service
 public class ProjectService {
 
+    private final static Logger logger = LoggerFactory.getLogger(ProjectService.class);
+
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     /**
      * Gets all projects in the system.
@@ -35,7 +58,7 @@ public class ProjectService {
      * @return a list of projects.
      */
     public List<Project> findAllForMember(UUID id) {
-        return projectRepository.findByMembersContains(id, Sort.by(Sort.Direction.DESC, "name"));
+        return projectRepository.findByMembersContainsOrOwnerEquals(id, Sort.by(Sort.Direction.DESC, "name"));
     }
 
     /**
@@ -68,6 +91,40 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    @Transactional
+    @KafkaListener(topics = "db.task-management.create-board")
+    public void createBoard(String message) {
+        try {
+            AddBoardRequest addBoardRequest = objectMapper.readValue(message, AddBoardRequest.class);
+
+            Project project = projectRepository.findById(UUID.fromString(addBoardRequest.getProject())).orElse(null);
+
+            if (project != null) {
+                project.addBoard(UUID.fromString(addBoardRequest.getBoard()));
+                projectRepository.save(project);
+            }
+        } catch (IOException e) {
+            logger.error("An error occurred while adding the board", e);
+        }
+    }
+
+    @Transactional
+    @KafkaListener(topics = "db.task-management.delete-board")
+    public void deleteBoard(String message) {
+        try {
+            DeleteBoardRequest deleteBoardRequest = objectMapper.readValue(message, DeleteBoardRequest.class);
+
+            Project project = projectRepository.findFirstByBoardsContains(UUID.fromString(deleteBoardRequest.getBoard())).orElse(null);
+
+            if (project != null) {
+                project.removeBoard(UUID.fromString(deleteBoardRequest.getBoard()));
+                projectRepository.save(project);
+            }
+        } catch (IOException e) {
+            logger.error("An error occurred while removing the board", e);
+        }
+    }
+
     /**
      * Adds a member to a project.
      *
@@ -96,8 +153,22 @@ public class ProjectService {
      * Deletes a project.
      *
      * @param project the project to delete.
+     * @return true if the project was deleted.
      */
-    public void deleteProject(Project project) {
-        projectRepository.delete(project);
+    public boolean deleteProject(Project project) {
+        try {
+            projectRepository.delete(project);
+
+            // Delete all boards associated with the project
+            DeleteProjectRequest message = new DeleteProjectRequest();
+            message.setProject(project.getId().toString());
+            message.setBoards(project.getBoards().stream().map(UUID::toString).collect(Collectors.toList()));
+            kafkaTemplate.send("db.project-management.delete-project", objectMapper.writeValueAsString(message));
+
+            return true;
+        } catch (JsonProcessingException e) {
+            logger.error("An error occurred while deleting the project", e);
+            return false;
+        }
     }
 }
