@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * This response is used for creating a project.
+ * This request is used for creating a project.
  */
 public class CreateProjectRequest {
 

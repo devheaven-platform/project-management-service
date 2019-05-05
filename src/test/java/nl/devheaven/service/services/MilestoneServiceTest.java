@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
@@ -33,6 +34,8 @@ public class MilestoneServiceTest {
     private ProjectRepository projectRepository;
     @MockBean
     private MilestoneRepository milestoneRepository;
+    @MockBean
+    private KafkaTemplate<String, String> kafkaTemplate;
     private Project project;
     private Milestone milestone;
 

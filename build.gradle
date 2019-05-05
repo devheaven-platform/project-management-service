@@ -26,6 +26,9 @@ dependencies {
 	runtimeOnly group: 'com.h2database', name: 'h2', version: '1.4.199'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 
+	// Kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
 	// Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
@@ -40,5 +43,6 @@ dependencies {
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 }
