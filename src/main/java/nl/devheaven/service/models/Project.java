@@ -333,16 +333,16 @@ public class Project implements Comparable<Project> {
     }
 
     /**
-     * Gets the createdAt date of the milestone.
+     * Gets the createdAt date of the project.
      *
-     * @return the createdAt date of the milestone.
+     * @return the createdAt date of the project.
      */
     public Date getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * Sets the createdAt date of the milestone.
+     * Sets the createdAt date of the project.
      *
      * @param createdAt the date to set.
      */
@@ -351,16 +351,16 @@ public class Project implements Comparable<Project> {
     }
 
     /**
-     * Gets the updatedAt date of the milestone.
+     * Gets the updatedAt date of the project.
      *
-     * @return the updatedAt date of the milestone.
+     * @return the updatedAt date of the project.
      */
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
     /**
-     * Sets the updatedAt date of the milestone.
+     * Sets the updatedAt date of the project.
      *
      * @param updatedAt the date to set.
      */
