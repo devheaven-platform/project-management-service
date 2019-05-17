@@ -11,11 +11,13 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +27,8 @@ public class ProjectServiceTest {
     private ProjectService projectService;
     @MockBean
     private ProjectRepository projectRepository;
+    @MockBean
+    private KafkaTemplate<String, String> kafkaTemplate;
     private Project project;
     private List<UUID> members;
 
@@ -45,15 +49,17 @@ public class ProjectServiceTest {
             add(project);
         }});
 
-        Mockito.when(projectRepository.findByMembersContains(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>() {{
+        Mockito.when(projectRepository.findByMembersContainsOrOwnerEquals(UUID.fromString("4562366c-2d59-44a5-b385-8848144706fe"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<Project>() {{
             add(project);
         }});
-        Mockito.when(projectRepository.findByMembersContains(UUID.fromString("74e52b1d-c0db-4a89-a93f-2439a2c208f8"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<>());
+        Mockito.when(projectRepository.findByMembersContainsOrOwnerEquals(UUID.fromString("74e52b1d-c0db-4a89-a93f-2439a2c208f8"), Sort.by(Sort.Direction.DESC, "name"))).thenReturn(new ArrayList<>());
 
         Mockito.when(projectRepository.findById(UUID.fromString("cf023055-af8e-42bf-9d2e-cfe37cefa237"))).thenReturn(Optional.of(project));
         Mockito.when(projectRepository.findById(UUID.fromString("b9c0dce0-b047-43f8-960d-53aca1a9fa26"))).thenReturn(Optional.empty());
 
         Mockito.when(projectRepository.save(notNull())).thenReturn(project);
+
+        Mockito.when(kafkaTemplate.send(eq("db.project-management.delete-project"), notNull())).thenReturn(null);
     }
 
     @Test

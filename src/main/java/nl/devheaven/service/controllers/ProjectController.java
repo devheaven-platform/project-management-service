@@ -1,5 +1,6 @@
 package nl.devheaven.service.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import nl.devheaven.service.exceptions.BadRequestException;
 import nl.devheaven.service.exceptions.InternalServerException;
 import nl.devheaven.service.exceptions.NotFoundException;
@@ -237,6 +238,7 @@ public class ProjectController {
      *
      * @param id the id of the project to delete.
      * @throws NotFoundException if the project is not found.
+     * @throws InternalServerException if an error occurred while deleting the project.
      */
     @DeleteMapping("/{id}")
     @Transactional
@@ -248,13 +250,15 @@ public class ProjectController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public void deleteProject(@ApiParam(required = true, value = "Id of the project to delete") @PathVariable String id) throws NotFoundException {
+    public void deleteProject(@ApiParam(required = true, value = "Id of the project to delete") @PathVariable String id) throws NotFoundException, InternalServerException {
         Project project = projectService.findById(UUID.fromString(id));
 
         if (project == null) {
             throw new NotFoundException("Project not found");
         }
 
-        projectService.deleteProject(project);
+        if (!projectService.deleteProject(project)) {
+            throw new InternalServerException("An error occurred while deleting the project");
+        }
     }
 }

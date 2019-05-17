@@ -5,14 +5,14 @@ server:
 spring:
   # Setup database connection
   datasource:
-    url: ${POSTGRES_URL}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   # Setup hibernate
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -26,6 +26,14 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
+  # Setup kafka
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: ${KAFKA_GROUP_ID}
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 management:
   endpoints:

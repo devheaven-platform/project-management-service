@@ -27,6 +27,12 @@ public class Project implements Comparable<Project> {
 
     private float budget;
 
+    private Identifier identifier;
+
+    private double invoiceMargin;
+
+    private double pricePerPoint;
+
     private Date start;
 
     @Column(nullable = false)
@@ -327,16 +333,16 @@ public class Project implements Comparable<Project> {
     }
 
     /**
-     * Gets the createdAt date of the milestone.
+     * Gets the createdAt date of the project.
      *
-     * @return the createdAt date of the milestone.
+     * @return the createdAt date of the project.
      */
     public Date getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * Sets the createdAt date of the milestone.
+     * Sets the createdAt date of the project.
      *
      * @param createdAt the date to set.
      */
@@ -345,20 +351,74 @@ public class Project implements Comparable<Project> {
     }
 
     /**
-     * Gets the updatedAt date of the milestone.
+     * Gets the updatedAt date of the project.
      *
-     * @return the updatedAt date of the milestone.
+     * @return the updatedAt date of the project.
      */
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
     /**
-     * Sets the updatedAt date of the milestone.
+     * Sets the updatedAt date of the project.
      *
      * @param updatedAt the date to set.
      */
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    /**
+     * Gets the point indentifier of the project.
+     *
+     * @return the identifier of the project.
+     */
+    public Identifier getIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * Sets the point identifier of the project.
+     *
+     * @param identifier the identifier to set.
+     */
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
+    }
+
+    /**
+     * Gets the price per point of the project.
+     *
+     * @return the price per point of the project.
+     */
+    public double getPricePerPoint() {
+        return pricePerPoint;
+    }
+
+    /**
+     * Sets the price per point of the project.
+     *
+     * @param pricePerPoint the price per point to set.
+     */
+    public void setPricePerPoint(double pricePerPoint) {
+        this.pricePerPoint = pricePerPoint;
+    }
+
+    /**
+     * Gets the invoice margin of the project.
+     *
+     * @return the invoice margin of the project.
+     */
+    public double getInvoiceMargin() {
+        return invoiceMargin;
+    }
+
+    /**
+     * Sets the invoice margin of the project.
+     *
+     * @param invoiceMargin the invoice margin to set.
+     */
+    public void setInvoiceMargin(double invoiceMargin) {
+        this.invoiceMargin = invoiceMargin;
     }
 }

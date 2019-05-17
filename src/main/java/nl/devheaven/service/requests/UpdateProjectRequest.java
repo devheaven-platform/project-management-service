@@ -1,12 +1,13 @@
 package nl.devheaven.service.requests;
 
 import io.swagger.annotations.ApiModelProperty;
+import nl.devheaven.service.models.Identifier;
 
 import java.util.Date;
 import java.util.UUID;
 
 /**
- * This response is used for updating a project.
+ * This request is used for updating a project.
  */
 public class UpdateProjectRequest {
 
@@ -18,6 +19,15 @@ public class UpdateProjectRequest {
 
     @ApiModelProperty(value = "The budget of the project", example = "100")
     private float budget;
+
+    @ApiModelProperty(value = "The identifier of the project", example = "STORY_POINTS")
+    private Identifier identifier;
+
+    @ApiModelProperty(value = "The invoice margin of the project", example = "20")
+    private double invoiceMargin;
+
+    @ApiModelProperty(value = "The price per point of the project", example = "50")
+    private double pricePerPoint;
 
     @ApiModelProperty(required = true, value = "The start date of the project", example = "2019-01-01T00:00:00.000Z")
     private Date start;
@@ -135,5 +145,47 @@ public class UpdateProjectRequest {
     public void setArchived(boolean archived) {
         this.archived = archived;
     }
+
+    /**
+     * Gets the point indentifier of the project.
+     *
+     * @return the identifier of the project.
+     */
+    public Identifier getIdentifier() { return identifier; }
+
+    /**
+     * Sets the point identifier of the project.
+     *
+     * @param identifier the identifier to set.
+     */
+    public void setIdentifier(Identifier identifier) { this.identifier = identifier; }
+
+    /**
+     * Gets the price per point of the project.
+     *
+     * @return the price per point of the project.
+     */
+    public double getPricePerPoint() { return pricePerPoint; }
+
+    /**
+     * Sets the price per point of the project.
+     *
+     * @param pricePerPoint the price per point to set.
+     */
+    public void setPricePerPoint(double pricePerPoint) { this.pricePerPoint = pricePerPoint; }
+
+    /**
+     * Gets the invoice margin of the project.
+     *
+     * @return the invoice margin of the project.
+     */
+    public double getInvoiceMargin() { return invoiceMargin; }
+
+    /**
+     * Sets the invoice margin of the project.
+     *
+     * @param invoiceMargin the invoice margin to set.
+     */
+    public void setInvoiceMargin(double invoiceMargin) { this.invoiceMargin = invoiceMargin; }
 
 }

@@ -1,5 +1,10 @@
 # Project Management Service
+[![Build Status](http://drone.devheaven.nl/api/badges/devheaven-platform/project-management-service/status.svg)](http://drone.devheaven.nl/devheaven-platform/project-management-service)
+
 This repository contains the project management service for the DevHeaven platform.
+
+# Development
+Build the server by executing the following command ./mvnw install -DskipTests -q in the root directory of the project. Then use java -jar -Dspring.profiles.active=dev target/kwetter-1.0.0.jar to run the server. You can also use an IDE like Intellij to run the server. Don't forget to specifiy -Dspring.profiles.active=dev as an VM argument if you use an IDE to run the server.
 
 # Contribution
 There are probably some points of improvement in the application design, structure or code.
