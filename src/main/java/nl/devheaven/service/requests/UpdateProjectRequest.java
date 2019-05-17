@@ -23,8 +23,8 @@ public class UpdateProjectRequest {
     @ApiModelProperty(value = "The identifier of the project", example = "STORY_POINTS")
     private Identifier identifier;
 
-    @ApiModelProperty(value = "The invoice margin of the project", example = "20")
-    private double invoiceMargin;
+    @ApiModelProperty(value = "The profit margin of the project", example = "20")
+    private double profitMargin;
 
     @ApiModelProperty(value = "The price per point of the project", example = "50")
     private double pricePerPoint;
@@ -175,17 +175,17 @@ public class UpdateProjectRequest {
     public void setPricePerPoint(double pricePerPoint) { this.pricePerPoint = pricePerPoint; }
 
     /**
-     * Gets the invoice margin of the project.
+     * Gets the profit margin of the project.
      *
-     * @return the invoice margin of the project.
+     * @return the profit margin of the project.
      */
-    public double getInvoiceMargin() { return invoiceMargin; }
+    public double getProfitMargin() { rprofit; }
 
     /**
-     * Sets the invoice margin of the project.
+     * Sets the profit margin of the project.
      *
-     * @param invoiceMargin the invoice margin to set.
+     * @profit the profit margin to set.
      */
-    public void setInvoiceMargin(double invoiceMargin) { this.invoiceMargin = invoiceMargin; }
+    public void setProfitMargin(dprofit) {profit; }
 
 }

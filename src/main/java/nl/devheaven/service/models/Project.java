@@ -29,7 +29,7 @@ public class Project implements Comparable<Project> {
 
     private Identifier identifier;
 
-    private double invoiceMargin;
+    private double profitMargin;
 
     private double pricePerPoint;
 
@@ -405,20 +405,20 @@ public class Project implements Comparable<Project> {
     }
 
     /**
-     * Gets the invoice margin of the project.
+     * Gets the profit margin of the project.
      *
      * @return the invoice margin of the project.
      */
-    public double getInvoiceMargin() {
-        return invoiceMargin;
+    public double getprofitMargin() {
+        return profitMargin;
     }
 
     /**
      * Sets the invoice margin of the project.
      *
-     * @param invoiceMargin the invoice margin to set.
+     * @param profitMargin the invoice margin to set.
      */
-    public void setInvoiceMargin(double invoiceMargin) {
-        this.invoiceMargin = invoiceMargin;
+    public void setprofitMargin(double profitMargin) {
+        this.profitMargin = profitMargin;
     }
 }
