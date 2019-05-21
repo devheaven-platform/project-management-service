@@ -17,9 +17,6 @@ public class CreateProjectRequest {
     @ApiModelProperty(value = "The description of the project", example = "This project is ...")
     private String description;
 
-    @ApiModelProperty(value = "The budget of the project", example = "100")
-    private float budget;
-
     @ApiModelProperty(value = "The duration of the project", example = "100")
     private float duration;
 
@@ -75,23 +72,6 @@ public class CreateProjectRequest {
         this.description = description;
     }
 
-    /**
-     * Gets the budget of the project.
-     *
-     * @return the budget of the project.
-     */
-    public float getBudget() {
-        return budget;
-    }
-
-    /**
-     * Sets the budget of the project.
-     *
-     * @param budget the budget to set.
-     */
-    public void setBudget(float budget) {
-        this.budget = budget;
-    }
 
     /**
      * Gets the start date of the project.
@@ -180,7 +160,7 @@ public class CreateProjectRequest {
      *
      * @return the profit margin of the project.
      */
-    public double getprofitMargin() { return profitMargin; }
+    public double getProfitMargin() { return profitMargin; }
 
     /**
      * Sets the profit margin of the project.

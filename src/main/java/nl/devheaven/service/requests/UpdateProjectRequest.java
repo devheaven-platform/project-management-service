@@ -151,41 +151,53 @@ public class UpdateProjectRequest {
      *
      * @return the identifier of the project.
      */
-    public Identifier getIdentifier() { return identifier; }
+    public Identifier getIdentifier() {
+        return identifier;
+    }
 
     /**
      * Sets the point identifier of the project.
      *
      * @param identifier the identifier to set.
      */
-    public void setIdentifier(Identifier identifier) { this.identifier = identifier; }
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
+    }
 
     /**
      * Gets the price per point of the project.
      *
      * @return the price per point of the project.
      */
-    public double getPricePerPoint() { return pricePerPoint; }
+    public double getPricePerPoint() {
+        return pricePerPoint;
+    }
 
     /**
      * Sets the price per point of the project.
      *
      * @param pricePerPoint the price per point to set.
      */
-    public void setPricePerPoint(double pricePerPoint) { this.pricePerPoint = pricePerPoint; }
+    public void setPricePerPoint(double pricePerPoint) {
+        this.pricePerPoint = pricePerPoint;
+    }
 
     /**
      * Gets the profit margin of the project.
      *
      * @return the profit margin of the project.
      */
-    public double getProfitMargin() { rprofit; }
+    public double getProfitMargin() {
+        return profitMargin;
+    }
 
     /**
      * Sets the profit margin of the project.
      *
      * @profit the profit margin to set.
      */
-    public void setProfitMargin(dprofit) {profit; }
+    public void setProfitMargin(double profit) {
+        profitMargin = profit;
+    }
 
 }

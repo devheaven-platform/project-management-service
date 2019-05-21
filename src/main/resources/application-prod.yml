@@ -11,8 +11,6 @@ spring:
     driver-class-name: org.postgresql.Driver
   # Setup hibernate
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
