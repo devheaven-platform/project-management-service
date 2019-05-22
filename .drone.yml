@@ -13,6 +13,7 @@ pipeline:
     host: "https://sonar.devheaven.nl"
     sources: "./src/main/java"
     profile: "Sonar way"
+    language: "java"
     secrets: [ sonar_login, sonar_password ]
     when:
       branch: master
