@@ -35,4 +35,3 @@ springfox:
     swagger:
       v2:
         path: '/docs/'
-
