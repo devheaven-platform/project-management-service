@@ -35,6 +35,10 @@ spring:
     producer:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
 management:
   endpoints:
     web:
