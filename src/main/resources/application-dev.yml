@@ -25,6 +25,10 @@ spring:
     producer:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
 springfox:
   # Configure swagger to listen on /docs/ instead of /v2/api-docs
   documentation:
