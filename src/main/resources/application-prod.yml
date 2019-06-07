@@ -3,13 +3,11 @@ server:
   address: ${SPRING_HOST}
 
 spring:
-  # Setup database connection
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-  # Setup hibernate
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,13 +19,12 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-  # Configure exceptions and disable automatic mapping of resources
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
-  # Setup kafka
   kafka:
+    enabled: true
     bootstrap-servers: ${KAFKA_HOST}
     consumer:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -56,8 +53,13 @@ management:
     tags:
       application: Project-Management-Service
 
+security:
+  jwt:
+    header: Authorization
+    prefix: Bearer
+    secret: ${JWT_SECRET}
+
 springfox:
-  # Configure swagger to listen on /docs/ instead of /v2/api-docs
   documentation:
     swagger:
       v2:

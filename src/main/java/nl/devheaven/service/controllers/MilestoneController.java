@@ -1,5 +1,6 @@
 package nl.devheaven.service.controllers;
 
+import io.swagger.annotations.*;
 import nl.devheaven.service.exceptions.InternalServerException;
 import nl.devheaven.service.exceptions.NotFoundException;
 import nl.devheaven.service.models.Milestone;
@@ -10,11 +11,11 @@ import nl.devheaven.service.responses.MilestoneResponse;
 import nl.devheaven.service.services.MilestoneService;
 import nl.devheaven.service.services.ProjectService;
 import nl.devheaven.service.utils.MergeUtility;
-import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +54,8 @@ public class MilestoneController {
      * @return List<MilestoneResponse> containing data about the milestones in the system.
      */
     @GetMapping("/")
-    @ApiOperation(value = "List all milestones in the system", response = MilestoneResponse.class, responseContainer = "List")
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "List all milestones in the system", response = MilestoneResponse.class, responseContainer = "List", authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 500, message = "Internal Server Error")
@@ -72,7 +74,8 @@ public class MilestoneController {
      * @throws NotFoundException if the milestone is not found.
      */
     @GetMapping("/{id}")
-    @ApiOperation(value = "Information about one milestone project", response = MilestoneResponse.class)
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "Information about one milestone project", response = MilestoneResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -97,9 +100,10 @@ public class MilestoneController {
      * @throws InternalServerException if an error occurred while creating the milestone.
      */
     @PostMapping("/")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
     @ResponseStatus(value = HttpStatus.CREATED)
-    @ApiOperation(value = "Adds a new milestone to the system", response = MilestoneResponse.class)
+    @ApiOperation(value = "Adds a new milestone to the system", response = MilestoneResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
@@ -129,7 +133,8 @@ public class MilestoneController {
      * @throws NotFoundException if the milestone is not found.
      */
     @PatchMapping("/{id}")
-    @ApiOperation(value = "Update one specific milestone", response = MilestoneResponse.class)
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "Update one specific milestone", response = MilestoneResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -158,8 +163,9 @@ public class MilestoneController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "Delete one specific milestone", response = void.class)
+    @ApiOperation(value = "Delete one specific milestone", response = void.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),

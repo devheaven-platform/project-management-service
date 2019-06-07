@@ -1,6 +1,6 @@
 package nl.devheaven.service.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.annotations.*;
 import nl.devheaven.service.exceptions.BadRequestException;
 import nl.devheaven.service.exceptions.InternalServerException;
 import nl.devheaven.service.exceptions.NotFoundException;
@@ -10,11 +10,11 @@ import nl.devheaven.service.requests.UpdateProjectRequest;
 import nl.devheaven.service.responses.ProjectResponse;
 import nl.devheaven.service.services.ProjectService;
 import nl.devheaven.service.utils.MergeUtility;
-import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +46,9 @@ public class ProjectController {
      * @return List<ProjectResponse> containing data about the projects in the system.
      */
     @GetMapping("/")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "List all projects in the system", response = ProjectResponse.class, responseContainer = "List")
+    @ApiOperation(value = "List all projects in the system", response = ProjectResponse.class, responseContainer = "List", authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 500, message = "Internal Server Error")
@@ -66,8 +67,9 @@ public class ProjectController {
      * @throws NotFoundException if the project is not found.
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "Information about one specific project", response = ProjectResponse.class)
+    @ApiOperation(value = "Information about one specific project", response = ProjectResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -93,8 +95,9 @@ public class ProjectController {
      * @return List<ProjectResponse> containing the projects from the user.
      */
     @GetMapping("/for/{id}")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "List all projects for a user", response = ProjectResponse.class, responseContainer = "List")
+    @ApiOperation(value = "List all projects for a user", response = ProjectResponse.class, responseContainer = "List", authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -115,7 +118,8 @@ public class ProjectController {
      */
     @PostMapping("/")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @ApiOperation(value = "Adds a new project to the system", response = ProjectResponse.class)
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "Adds a new project to the system", response = ProjectResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
@@ -143,8 +147,9 @@ public class ProjectController {
      * @throws NotFoundException if the project is not found.
      */
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "Update one specific project", response = ProjectResponse.class)
+    @ApiOperation(value = "Update one specific project", response = ProjectResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -175,8 +180,9 @@ public class ProjectController {
      * @throws BadRequestException if the project already has the member.
      */
     @PatchMapping("/{id}/members/{memberId}")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "Adds a member", response = ProjectResponse.class)
+    @ApiOperation(value = "Adds a member", response = ProjectResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -209,8 +215,9 @@ public class ProjectController {
      * @throws BadRequestException if the project doesn't has the member.
      */
     @DeleteMapping("/{id}/members/{memberId}")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
-    @ApiOperation(value = "Removes a member", response = ProjectResponse.class)
+    @ApiOperation(value = "Removes a member", response = ProjectResponse.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -241,9 +248,10 @@ public class ProjectController {
      * @throws InternalServerException if an error occurred while deleting the project.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     @Transactional
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "Delete one specific project", response = void.class)
+    @ApiOperation(value = "Delete one specific project", response = void.class, authorizations = {@Authorization(value = "bearerAuth")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 401, message = "Unauthorized"),

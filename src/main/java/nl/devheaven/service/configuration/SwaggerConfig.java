@@ -1,8 +1,8 @@
 package nl.devheaven.service.configuration;
 
-import nl.devheaven.service.models.Error;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicates;
+import nl.devheaven.service.models.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +49,7 @@ public class SwaggerConfig {
                 .apiInfo(metadata())
                 .additionalModels(typeResolver.resolve(Error.class))
                 .useDefaultResponseMessages(false)
-                .securitySchemes(new ArrayList<>(Arrays.asList(new ApiKey("Bearer %token", "Authorization", "Header"))))
+                .securitySchemes(new ArrayList<>(Arrays.asList(new ApiKey("bearerAuth", "Authorization", "Header"))))
                 .produces(new HashSet<String>() {{
                     add("application/json");
                 }})
