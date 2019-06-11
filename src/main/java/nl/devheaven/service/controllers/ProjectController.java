@@ -17,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -124,11 +126,9 @@ public class ProjectController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public ProjectResponse createProject(@ApiParam("New User") @RequestBody CreateProjectRequest createProjectRequest) throws InternalServerException {
+    public ProjectResponse createProject(@ApiIgnore Principal principal, @ApiParam("New User") @RequestBody CreateProjectRequest createProjectRequest) throws InternalServerException {
         Project newProject = modelMapper.map(createProjectRequest, Project.class);
-
-        // TODO: get owner id from token
-        newProject.setOwner(UUID.randomUUID());
+        newProject.setOwner(UUID.fromString(principal.getName()));
 
         Project project = projectService.createProject(newProject);
         if (project == null) {
