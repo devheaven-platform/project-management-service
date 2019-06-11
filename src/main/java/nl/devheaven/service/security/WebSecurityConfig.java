@@ -1,7 +1,10 @@
 package nl.devheaven.service.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -11,7 +14,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -20,6 +22,18 @@ import java.util.Collections;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final TokenProvider tokenProvider;
+
+    /**
+     * Constructor for the web security config.
+     *
+     * @param tokenProvider instance of the token provider.
+     */
+    @Autowired
+    public WebSecurityConfig(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     /**
      * Configures the JWT Token Configurator.
@@ -38,6 +52,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Enable cors
         http.cors();
+
+        // Entry points
+        http.authorizeRequests()
+                .antMatchers("/milestones").authenticated()
+                .antMatchers("/projects").authenticated();
+
+        // Apply JWT
+        http.apply(new TokenFilterConfigurer(tokenProvider));
     }
 
     /**
@@ -73,6 +95,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    /**
+     * Configures a authentication manager to handle authentication.
+     *
+     * @return An instance of the authentication manager.
+     * @throws Exception if an error occurred.
+     */
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
 
 }
 

@@ -92,7 +92,7 @@ public class ProjectService {
     }
 
     @Transactional
-    @KafkaListener(topics = "db.task-management.create-board")
+    @KafkaListener(topics = "db.task-management.create-board", autoStartup = "${spring.kafka.enabled:true}")
     public void createBoard(String message) {
         try {
             AddBoardRequest addBoardRequest = objectMapper.readValue(message, AddBoardRequest.class);
@@ -109,7 +109,7 @@ public class ProjectService {
     }
 
     @Transactional
-    @KafkaListener(topics = "db.task-management.delete-board")
+    @KafkaListener(topics = "db.task-management.delete-board", autoStartup = "${spring.kafka.enabled:true}")
     public void deleteBoard(String message) {
         try {
             DeleteBoardRequest deleteBoardRequest = objectMapper.readValue(message, DeleteBoardRequest.class);
